@@ -7,7 +7,11 @@ import {
   where,
   getDocs
 } from "./firebase.js";
-
+// فتح البطاقة الأولى حتى لو فشل Firebase
+document.addEventListener('DOMContentLoaded', () => {
+  const firstCard = document.querySelector('.card');
+  if (firstCard) firstCard.classList.add('open');
+});
 /**
  * تسجيل طالب جديد في Firestore
  * - التحقق من الحقول الإجبارية
