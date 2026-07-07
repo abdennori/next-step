@@ -1,88 +1,312 @@
-// استيراد التوابع من Firebase
-import {
-  db,
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs
-} from "./firebase.js";
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>يوم التوجيه الجامعي — بطاقة المشارك</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-/**
- * تسجيل طالب جديد في Firestore
- * - التحقق من الحقول الإجبارية
- * - منع التكرار بناءً على رقم الهاتف
- * - عرض رسائل نجاح / خطأ
- */
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('registrationForm');
-  const msgBox = document.getElementById('regMsg');
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span>🎓</span> يوم التوجيه الجامعي</div>
+    <h1>اختر تخصصك<br><em>بذكاء</em></h1>
+    <p class="hero-sub">Choisissez votre spécialité avec intelligence</p>
+    <div class="day-pills">
+      <span class="pill pill-green">🟢 اليوم الأول — الإلهام</span>
+      <span class="pill pill-blue">🔵 اليوم الثاني — Village</span>
+      <span class="pill pill-purple">🟣 اليوم الثالث — القرار</span>
+    </div>
+  </div>
 
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
+  <!-- SECTIONS -->
+  <div class="sections">
+    <p class="scroll-hint">▾ اضغط على أي بطاقة لعرض التفاصيل</p>
 
-    // جلب القيم
-    const fullName = document.getElementById('fullName').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const highSchool = document.getElementById('highSchool').value.trim();
-    const branch = document.getElementById('branch').value;
-    const wilaya = document.getElementById('wilaya').value.trim();
+    <!-- 1. PROGRAM -->
+    <div class="card" data-card>
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-icon icon-teal">📅</div>
+        <div class="card-title">البرنامج الكامل</div>
+        <div class="card-chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <div class="day-block">
+            <div class="day-label green">🟢 اليوم الأول — الإلهام والتوجيه</div>
+            <div class="activity-list">
+              <div class="activity-item"><div class="activity-dot dot-green"></div><div><div class="activity-text">📲 استقبال وتسجيل إلكتروني</div><div class="activity-sub">بطاقة QR Code لكل مشارك</div></div></div>
+              <div class="activity-item"><div class="activity-dot dot-green"></div><div><div class="activity-text">🎙️ افتتاح رسمي</div><div class="activity-sub">كلمة رئيس المكتب الولائي وكلمة الشركاء</div></div></div>
+              <div class="activity-item"><div class="activity-dot dot-green"></div><div><div class="activity-text">🎓 محاضرة رئيسية</div><div class="activity-sub">«كيف تختار تخصصك الجامعي بذكاء؟»</div></div></div>
+              <div class="activity-item"><div class="activity-dot dot-green"></div><div><div class="activity-text">🎬 عرض فيديو قصير</div><div class="activity-sub">جامعة المغير والتخصصات المتاحة</div></div></div>
+              <div class="activity-item"><div class="activity-dot dot-green"></div><div><div class="activity-text">❓ جلسة أسئلة مباشرة</div><div class="activity-sub">تفاعل مباشر مع المختصين</div></div></div>
+            </div>
+          </div>
+          <div class="day-block">
+            <div class="day-label blue">🔵 اليوم الثاني — Village d'Orientation</div>
+            <div class="activity-list">
+              <div class="activity-item"><div class="activity-dot dot-blue"></div><div><div class="activity-text">🏛️ جولة حرة بين الأركان العلمية</div><div class="activity-sub">10 أركان تفاعلية — كل ركن يؤطره أستاذ أو طالب متفوق</div></div></div>
+              <div class="activity-item"><div class="activity-dot dot-blue"></div><div><div class="activity-text">🤖 ركن الذكاء الاصطناعي</div><div class="activity-sub">«اسأل الذكاء الاصطناعي عن تخصصك»</div></div></div>
+              <div class="activity-item"><div class="activity-dot dot-blue"></div><div><div class="activity-text">📊 استطلاع مباشر على الشاشة</div><div class="activity-sub">شارك برأيك وشاهد النتائج فورًا</div></div></div>
+            </div>
+          </div>
+          <div class="day-block" style="margin-bottom:0">
+            <div class="day-label purple">🟣 اليوم الثالث — القرار والانطلاق</div>
+            <div class="activity-list">
+              <div class="activity-item"><div class="activity-dot dot-purple"></div><div class="activity-text">🗣️ جلسة «اسأل ما تشاء» + شهادات الطلبة</div></div>
+              <div class="activity-item"><div class="activity-dot dot-purple"></div><div class="activity-text">🏅 توزيع شهادات الشكر والتكريم</div></div>
+              <div class="activity-item"><div class="activity-dot dot-purple"></div><div class="activity-text">📸 الصورة الجماعية والاختتام الرسمي</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    // التحقق من الحقول المطلوبة
-    if (!fullName || !phone || !highSchool || !branch) {
-      showMessage('❌ يرجى ملء جميع الحقول المطلوبة (الاسم، الهاتف، الثانوية، الشعبة).', 'error');
-      return;
-    }
+    <!-- 2. MAP -->
+    <div class="card" data-card>
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-icon icon-gold">🗺️</div>
+        <div class="card-title">خريطة الأركان</div>
+        <div class="card-chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:12px">اليوم الثاني — تنقّل بحرية بين الأركان</p>
+          <div class="corners-grid">
+            <div class="corner-card c-red"><span class="corner-emoji">🩺</span><span class="corner-name">العلوم الطبية</span></div>
+            <div class="corner-card c-blue"><span class="corner-emoji">⚙️</span><span class="corner-name">الهندسة والتكنولوجيا</span></div>
+            <div class="corner-card c-yellow"><span class="corner-emoji">📊</span><span class="corner-name">العلوم الاقتصادية</span></div>
+            <div class="corner-card c-purple"><span class="corner-emoji">⚖️</span><span class="corner-name">الحقوق والعلوم السياسية</span></div>
+            <div class="corner-card c-orange"><span class="corner-emoji">📚</span><span class="corner-name">الآداب واللغات</span></div>
+            <div class="corner-card c-cyan"><span class="corner-emoji">🏛️</span><span class="corner-name">المدارس العليا الوطنية</span></div>
+            <div class="corner-card c-green"><span class="corner-emoji">🌿</span><span class="corner-name">العلوم الطبيعية والحياة</span></div>
+            <div class="corner-card c-teal"><span class="corner-emoji">🏠</span><span class="corner-name">الحياة الجامعية</span></div>
+            <div class="corner-card c-pink"><span class="corner-emoji">📝</span><span class="corner-name">التسجيل والمنحة والإيواء</span></div>
+            <div class="corner-card c-brown"><span class="corner-emoji">💼</span><span class="corner-name">ماذا بعد التخرج؟</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    // التحقق من صحة رقم الهاتف (مثال: 10 أرقام على الأقل)
-    if (phone.length < 6) {
-      showMessage('❌ رقم الهاتف غير صحيح.', 'error');
-      return;
-    }
+    <!-- 3. CONTACTS -->
+    <div class="card" data-card>
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-icon icon-mint">📞</div>
+        <div class="card-title">أرقام المنظمين</div>
+        <div class="card-chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <div class="contact-list">
+            <div class="contact-item">
+              <div class="contact-avatar">👤</div>
+              <div>
+                <div class="contact-name">رئيس المكتب الولائي</div>
+                <div class="contact-role">المنسق العام للفعالية</div>
+                <a class="contact-number" href="tel:+213xxxxxxxxx">📱 0XX XX XX XX</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-avatar">👤</div>
+              <div>
+                <div class="contact-name">منسق اليوم الثاني</div>
+                <div class="contact-role">مسؤول Village d'Orientation</div>
+                <a class="contact-number" href="tel:+213xxxxxxxxx">📱 0XX XX XX XX</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-avatar">👤</div>
+              <div>
+                <div class="contact-name">مسؤول التسجيل والاستقبال</div>
+                <div class="contact-role">متاح طوال أيام الفعالية</div>
+                <a class="contact-number" href="tel:+213xxxxxxxxx">📱 0XX XX XX XX</a>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center">⚠️ في حالة الطوارئ أو الاستفسار — نحن هنا لمساعدتك</p>
+        </div>
+      </div>
+    </div>
 
-    try {
-      // 1. التحقق من تكرار رقم الهاتف
-      const q = query(collection(db, "registrations"), where("phone", "==", phone));
-      const querySnapshot = await getDocs(q);
+    <!-- 4. LINKS -->
+    <div class="card" data-card>
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-icon icon-navy">🔗</div>
+        <div class="card-title">روابط التسجيل الجامعي</div>
+        <div class="card-chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <div class="links-list">
+            <a class="link-item" href="https://www.progres.mesrs.dz" target="_blank">
+              <div class="link-icon" style="background:#e3f2fd">🎓</div>
+              <div><div class="link-text-main">بوابة التسجيل الجامعي</div><div class="link-text-sub">progres.mesrs.dz</div></div>
+              <div class="link-arrow">←</div>
+            </a>
+            <a class="link-item" href="https://www.mesrs.dz" target="_blank">
+              <div class="link-icon" style="background:#e8f5e9">🏛️</div>
+              <div><div class="link-text-main">وزارة التعليم العالي</div><div class="link-text-sub">mesrs.dz</div></div>
+              <div class="link-arrow">←</div>
+            </a>
+            <a class="link-item" href="#" target="_blank">
+              <div class="link-icon" style="background:#fff3e0">📋</div>
+              <div><div class="link-text-main">دليل التخصصات الجامعية</div><div class="link-text-sub">تحميل مباشر — PDF</div></div>
+              <div class="link-arrow">←</div>
+            </a>
+            <a class="link-item" href="#" target="_blank">
+              <div class="link-icon" style="background:#f3e5f5">💰</div>
+              <div><div class="link-text-main">ملف المنحة الجامعية</div><div class="link-text-sub">الشروط والوثائق المطلوبة</div></div>
+              <div class="link-arrow">←</div>
+            </a>
+            <a class="link-item" href="#" target="_blank">
+              <div class="link-icon" style="background:#e0f7fa">🏠</div>
+              <div><div class="link-text-main">الإيواء الجامعي</div><div class="link-text-sub">الإجراءات والتسجيل في الإقامة</div></div>
+              <div class="link-arrow">←</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      if (!querySnapshot.empty) {
-        showMessage('⚠️ لقد قمت بالتسجيل مسبقًا.', 'error');
-        return;
-      }
+    <!-- 5. DIGITAL FEATURES -->
+    <div class="card" data-card>
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-icon icon-red">💡</div>
+        <div class="card-title">مميزات الفعالية الرقمية</div>
+        <div class="card-chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <div class="digital-grid">
+            <div class="digital-item"><div class="di-icon">📱</div><div class="di-label">بطاقة مشارك إلكترونية بـ QR</div></div>
+            <div class="digital-item"><div class="di-icon">🤖</div><div class="di-label">ركن الذكاء الاصطناعي التفاعلي</div></div>
+            <div class="digital-item"><div class="di-icon">📊</div><div class="di-label">استطلاع مباشر على الشاشة</div></div>
+            <div class="digital-item"><div class="di-icon">🎬</div><div class="di-label">فيديوهات 30 ثانية يومية</div></div>
+            <div class="digital-item"><div class="di-icon">🧩</div><div class="di-label">جدار الأمنيات التفاعلي</div></div>
+            <div class="digital-item"><div class="di-icon">🎁</div><div class="di-label">هدية رقمية عند التسجيل</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      // 2. إضافة المستند إلى Firestore
-      await addDoc(collection(db, "registrations"), {
-        fullName,
-        phone,
-        email,
-        highSchool,
-        branch,
-        wilaya,
-        registeredAt: new Date().toISOString()
-      });
+    <!-- 6. REGISTRATION (NEW) -->
+    <div class="card" data-card id="regCard">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-icon icon-orange">📝</div>
+        <div class="card-title">تسجيل الحضور</div>
+        <div class="card-chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <form class="reg-form" id="registerForm">
+            <div class="reg-form-row">
+              <div class="reg-form-group">
+                <label for="fullName">الاسم الكامل *</label>
+                <input type="text" id="fullName" placeholder="مثال: أحمد بن سالم" required />
+              </div>
+              <div class="reg-form-group">
+                <label for="phone">رقم الهاتف *</label>
+                <input type="tel" id="phone" placeholder="0XX XX XX XX" required />
+              </div>
+            </div>
+            <div class="reg-form-row">
+              <div class="reg-form-group">
+                <label for="email">البريد الإلكتروني</label>
+                <input type="email" id="email" placeholder="exemple@mail.com" />
+              </div>
+              <div class="reg-form-group">
+                <label for="highSchool">الثانوية *</label>
+                <input type="text" id="highSchool" placeholder="اسم الثانوية" required />
+              </div>
+            </div>
+            <div class="reg-form-row">
+              <div class="reg-form-group">
+                <label for="branch">الشعبة *</label>
+                <select id="branch" required>
+                  <option value="">-- اختر --</option>
+                  <option value="علوم تجريبية">علوم تجريبية</option>
+                  <option value="رياضيات">رياضيات</option>
+                  <option value="تقني رياضي">تقني رياضي</option>
+                  <option value="تسيير واقتصاد">تسيير واقتصاد</option>
+                  <option value="آداب وفلسفة">آداب وفلسفة</option>
+                  <option value="لغات أجنبية">لغات أجنبية</option>
+                </select>
+              </div>
+              <div class="reg-form-group">
+                <label for="wilaya">الولاية</label>
+                <select id="wilaya">
+                  <option value="">-- اختر --</option>
+                  <option value="أدرار">أدرار</option>
+                  <option value="الشلف">الشلف</option>
+                  <option value="الأغواط">الأغواط</option>
+                  <option value="أم البواقي">أم البواقي</option>
+                  <option value="باتنة">باتنة</option>
+                  <option value="بجاية">بجاية</option>
+                  <option value="بسكرة">بسكرة</option>
+                  <option value="بشار">بشار</option>
+                  <option value="البليدة">البليدة</option>
+                  <option value="البويرة">البويرة</option>
+                  <option value="تمنراست">تمنراست</option>
+                  <option value="تبسة">تبسة</option>
+                  <option value="تلمسان">تلمسان</option>
+                  <option value="تيارت">تيارت</option>
+                  <option value="تيزي وزو">تيزي وزو</option>
+                  <option value="الجزائر">الجزائر</option>
+                  <option value="الجلفة">الجلفة</option>
+                  <option value="جيجل">جيجل</option>
+                  <option value="سطيف">سطيف</option>
+                  <option value="سعيدة">سعيدة</option>
+                  <option value="سكيكدة">سكيكدة</option>
+                  <option value="سيدي بلعباس">سيدي بلعباس</option>
+                  <option value="عنابة">عنابة</option>
+                  <option value="قالمة">قالمة</option>
+                  <option value="قسنطينة">قسنطينة</option>
+                  <option value="المدية">المدية</option>
+                  <option value="مستغانم">مستغانم</option>
+                  <option value="المسيلة">المسيلة</option>
+                  <option value="معسكر">معسكر</option>
+                  <option value="ورقلة">ورقلة</option>
+                  <option value="وهران">وهران</option>
+                  <option value="البيض">البيض</option>
+                  <option value="إليزي">إليزي</option>
+                  <option value="برج بوعريريج">برج بوعريريج</option>
+                  <option value="بومرداس">بومرداس</option>
+                  <option value="الطارف">الطارف</option>
+                  <option value="تندوف">تندوف</option>
+                  <option value="تيسمسيلت">تيسمسيلت</option>
+                  <option value="الوادي">الوادي</option>
+                  <option value="خنشلة">خنشلة</option>
+                  <option value="سوق أهراس">سوق أهراس</option>
+                  <option value="تيبازة">تيبازة</option>
+                  <option value="ميلة">ميلة</option>
+                  <option value="عين الدفلى">عين الدفلى</option>
+                  <option value="النعامة">النعامة</option>
+                  <option value="عين تيموشنت">عين تيموشنت</option>
+                  <option value="غرداية">غرداية</option>
+                  <option value="غليزان">غليزان</option>
+                </select>
+              </div>
+            </div>
+            <div class="reg-actions">
+              <button type="submit" class="btn btn-primary" id="registerBtn">📝 تسجيل</button>
+            </div>
+          </form>
+          <!-- رسالة النتيجة -->
+          <div id="msgBox" class="msg-box"></div>
+          <p style="font-size:11px;color:var(--muted);margin-top:16px;text-align:center">🔒 يتم تسجيل بياناتك بشكل آمن. رقم الهاتف يستخدم مرة واحدة فقط.</p>
+        </div>
+      </div>
+    </div>
 
-      // 3. رسالة نجاح
-      showMessage('✅ تم تسجيل حضورك بنجاح.', 'success');
+  </div>
 
-      // 4. تفريغ النموذج
-      form.reset();
+  <!-- FOOTER -->
+  <footer>
+    <strong>المنظمة الوطنية للشباب من أجل الجزائر — المكتب التنفيذي الولائي المغير</strong><br />
+    <span style="margin-top:4px;display:block">معًا نختار بذكاء ✦ Ensemble, choisissons avec intelligence</span>
+  </footer>
 
-    } catch (error) {
-      console.error("خطأ في التسجيل:", error);
-      showMessage('❌ حدث خطأ أثناء التسجيل. حاول مرة أخرى لاحقاً.', 'error');
-    }
-  });
-
-  // دالة مساعدة لعرض الرسائل
-  function showMessage(text, type) {
-    msgBox.className = 'msg-box ' + (type || '');
-    msgBox.textContent = text;
-    // اختفاء الرسالة بعد 6 ثوانٍ
-    clearTimeout(window.msgTimeout);
-    window.msgTimeout = setTimeout(() => {
-      msgBox.className = 'msg-box';
-      msgBox.textContent = '';
-    }, 6000);
-  }
-});
+  <script type="module" src="script.js"></script>
+</body>
+</html>
