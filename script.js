@@ -1,92 +1,109 @@
-// استيراد التوابع من Firebase
-import {
-  db,
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs
-} from "./firebase.js";
-// فتح البطاقة الأولى حتى لو فشل Firebase
-document.addEventListener('DOMContentLoaded', () => {
+// script.js - نسخة تعمل بدون أخطاء وتعتمد على localStorage
+
+// تعريف الدالة toggle في النطاق العام حتى تعمل onclick في HTML
+window.toggle = function(header) {
+  const card = header.closest('.card');
+  if (!card) return;
+  const isOpen = card.classList.contains('open');
+  // إغلاق جميع البطاقات المفتوحة
+  document.querySelectorAll('.card.open').forEach(c => {
+    if (c !== card) c.classList.remove('open');
+  });
+  // تبديل حالة البطاقة الحالية
+  if (!isOpen) card.classList.add('open');
+  else card.classList.remove('open');
+};
+
+// انتظار تحميل DOM
+document.addEventListener('DOMContentLoaded', function() {
+  // فتح البطاقة الأولى افتراضياً
   const firstCard = document.querySelector('.card');
   if (firstCard) firstCard.classList.add('open');
-});
-/**
- * تسجيل طالب جديد في Firestore
- * - التحقق من الحقول الإجبارية
- * - منع التكرار بناءً على رقم الهاتف
- * - عرض رسائل نجاح / خطأ
- */
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('registrationForm');
-  const msgBox = document.getElementById('regMsg');
 
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
+  // تأثير الظهور عند التمرير
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('[data-card]').forEach(card => observer.observe(card));
 
-    // جلب القيم
-    const fullName = document.getElementById('fullName').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const highSchool = document.getElementById('highSchool').value.trim();
-    const branch = document.getElementById('branch').value;
-    const wilaya = document.getElementById('wilaya').value.trim();
+  // ── دوال التخزين المحلي ──
+  const STORAGE_KEY = 'registrations_local';
 
-    // التحقق من الحقول المطلوبة
-    if (!fullName || !phone || !highSchool || !branch) {
-      showMessage('❌ يرجى ملء جميع الحقول المطلوبة (الاسم، الهاتف، الثانوية، الشعبة).', 'error');
-      return;
-    }
-
-    // التحقق من صحة رقم الهاتف (مثال: 10 أرقام على الأقل)
-    if (phone.length < 6) {
-      showMessage('❌ رقم الهاتف غير صحيح.', 'error');
-      return;
-    }
-
+  function getRegistrations() {
     try {
-      // 1. التحقق من تكرار رقم الهاتف
-      const q = query(collection(db, "registrations"), where("phone", "==", phone));
-      const querySnapshot = await getDocs(q);
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch { return []; }
+  }
 
-      if (!querySnapshot.empty) {
-        showMessage('⚠️ لقد قمت بالتسجيل مسبقًا.', 'error');
+  function saveRegistrations(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+
+  // دالة عرض الرسائل
+  function showMessage(text, type = 'success') {
+    const box = document.getElementById('msgBox');
+    if (!box) return;
+    box.className = `msg-box ${type}`;
+    box.textContent = text;
+    setTimeout(() => {
+      box.className = 'msg-box';
+      box.textContent = '';
+    }, 5000);
+  }
+
+  // ── نموذج التسجيل ──
+  const registerForm = document.getElementById('registerForm');
+  if (registerForm) {
+    registerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById('fullName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const highSchool = document.getElementById('highSchool').value.trim();
+      const branch = document.getElementById('branch').value;
+      const wilaya = document.getElementById('wilaya').value;
+
+      // التحقق من الحقول المطلوبة
+      if (!fullName || !phone || !highSchool || !branch) {
+        showMessage('❌ يرجى ملء جميع الحقول المطلوبة (*)', 'error');
+        return;
+      }
+      if (phone.length < 6) {
+        showMessage('❌ رقم الهاتف غير صحيح (أقل من 6 أرقام)', 'error');
         return;
       }
 
-      // 2. إضافة المستند إلى Firestore
-      await addDoc(collection(db, "registrations"), {
+      // منع التكرار
+      const registrations = getRegistrations();
+      if (registrations.some(r => r.phone === phone)) {
+        showMessage('⚠️ لقد قمت بالتسجيل مسبقًا.', 'warning');
+        return;
+      }
+
+      // حفظ البيانات
+      const newRecord = {
         fullName,
         phone,
         email,
         highSchool,
         branch,
         wilaya,
-        registeredAt: new Date().toISOString()
-      });
+        registrationDate: new Date().toISOString()
+      };
+      registrations.push(newRecord);
+      saveRegistrations(registrations);
 
-      // 3. رسالة نجاح
       showMessage('✅ تم تسجيل حضورك بنجاح.', 'success');
-
-      // 4. تفريغ النموذج
-      form.reset();
-
-    } catch (error) {
-      console.error("خطأ في التسجيل:", error);
-      showMessage('❌ حدث خطأ أثناء التسجيل. حاول مرة أخرى لاحقاً.', 'error');
-    }
-  });
-
-  // دالة مساعدة لعرض الرسائل
-  function showMessage(text, type) {
-    msgBox.className = 'msg-box ' + (type || '');
-    msgBox.textContent = text;
-    // اختفاء الرسالة بعد 6 ثوانٍ
-    clearTimeout(window.msgTimeout);
-    window.msgTimeout = setTimeout(() => {
-      msgBox.className = 'msg-box';
-      msgBox.textContent = '';
-    }, 6000);
+      registerForm.reset();
+    });
   }
 });
