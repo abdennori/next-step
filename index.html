@@ -92,9 +92,7 @@
       animation: spin 1s linear infinite;
     }
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
     #splash .progress-bar {
       width: 200px;
@@ -112,15 +110,11 @@
       animation: loadProgress 1.8s ease forwards;
     }
     @keyframes loadProgress {
-      0% {
-        width: 0%;
-      }
-      100% {
-        width: 100%;
-      }
+      0% { width: 0%; }
+      100% { width: 100%; }
     }
 
-    /* ===== DARK MODE TOGGLE ===== */
+    /* ===== THEME TOGGLE ===== */
     .theme-toggle {
       position: fixed;
       top: 16px;
@@ -140,9 +134,28 @@
       gap: 6px;
       font-weight: 600;
     }
-    .theme-toggle:hover {
-      transform: scale(1.05);
+    .theme-toggle:hover { transform: scale(1.05); }
+
+    /* ===== SOUND TOGGLE ===== */
+    .sound-toggle {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 999;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      color: var(--text);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
+    .sound-toggle:hover { transform: scale(1.05); }
 
     /* ===== COUNTDOWN ===== */
     .countdown-bar {
@@ -206,9 +219,7 @@
       border: 1px solid var(--border);
       transition: var(--transition);
     }
-    .stat-card:hover {
-      transform: translateY(-3px);
-    }
+    .stat-card:hover { transform: translateY(-3px); }
     .stat-card .num {
       font-size: 28px;
       font-weight: 800;
@@ -220,7 +231,7 @@
       margin-top: 2px;
     }
 
-    /* ===== REMAINING STYLES (from original) ===== */
+    /* ===== HERO ===== */
     .hero {
       background: linear-gradient(145deg, var(--navy), #1a3050);
       color: white;
@@ -239,7 +250,7 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+      background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.04) 0%, transparent 60%);
       pointer-events: none;
     }
     .hero-logo img {
@@ -248,22 +259,20 @@
       border-radius: 12px;
       background: var(--white);
       padding: 4px 12px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
       margin-bottom: 14px;
       transition: var(--transition);
     }
-    .hero-logo img:hover {
-      transform: scale(1.04) rotate(-1deg);
-    }
+    .hero-logo img:hover { transform: scale(1.04) rotate(-1deg); }
     .hero-badge {
       display: inline-block;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255,255,255,0.12);
       backdrop-filter: blur(6px);
       padding: 4px 18px 4px 14px;
       border-radius: 40px;
       font-size: 13px;
       letter-spacing: 0.3px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255,255,255,0.08);
       margin-bottom: 14px;
     }
     .hero h1 {
@@ -297,36 +306,28 @@
       border-radius: 40px;
       font-size: 12px;
       font-weight: 600;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255,255,255,0.08);
       backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255,255,255,0.06);
       transition: var(--transition);
       cursor: default;
     }
-    .pill:hover {
-      transform: translateY(-2px) scale(1.02);
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .pill-green {
-      border-right: 3px solid #4caf50;
-    }
-    .pill-blue {
-      border-right: 3px solid #42a5f5;
-    }
-    .pill-purple {
-      border-right: 3px solid #ab47bc;
-    }
+    .pill:hover { transform: translateY(-2px) scale(1.02); background: rgba(255,255,255,0.14); }
+    .pill-green { border-right: 3px solid #4caf50; }
+    .pill-blue { border-right: 3px solid #42a5f5; }
+    .pill-purple { border-right: 3px solid #ab47bc; }
+
     .counter-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255,255,255,0.15);
       backdrop-filter: blur(6px);
       padding: 4px 16px 4px 14px;
       border-radius: 40px;
       font-size: 13px;
       font-weight: 500;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255,255,255,0.08);
       margin-top: 12px;
     }
     .counter-badge .count-num {
@@ -340,20 +341,12 @@
       animation: countUp 0.4s ease;
     }
     @keyframes countUp {
-      0% {
-        opacity: 0.3;
-        transform: scale(0.8);
-      }
-      60% {
-        transform: scale(1.2);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
+      0% { opacity: 0.3; transform: scale(0.8); }
+      60% { transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
-    /* progress tracker */
+    /* ===== PROGRESS TRACKER ===== */
     .progress-tracker {
       display: flex;
       align-items: center;
@@ -383,7 +376,7 @@
       font-family: inherit;
     }
     .progress-step:hover {
-      background: rgba(11, 26, 51, 0.05);
+      background: rgba(11,26,51,0.05);
       transform: translateY(-1px);
     }
     .progress-step .step-num {
@@ -402,12 +395,9 @@
     .progress-step.active .step-num {
       background: var(--navy);
       color: var(--white);
-      box-shadow: 0 4px 12px rgba(11, 26, 51, 0.25);
+      box-shadow: 0 4px 12px rgba(11,26,51,0.25);
     }
-    .progress-step.active {
-      color: var(--text);
-      font-weight: 600;
-    }
+    .progress-step.active { color: var(--text); font-weight: 600; }
     .progress-step.done .step-num {
       background: var(--teal);
       color: var(--white);
@@ -427,6 +417,7 @@
       transition: width 0.8s ease;
       width: 0%;
     }
+
     .scroll-hint {
       text-align: center;
       font-size: 13px;
@@ -435,16 +426,11 @@
       animation: float 2.4s ease-in-out infinite;
     }
     @keyframes float {
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-6px);
-      }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
     }
 
-    /* cards */
+    /* ===== CARDS ===== */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -455,9 +441,7 @@
       overflow: hidden;
       transform-origin: top center;
     }
-    .card:hover {
-      box-shadow: var(--shadow-hover);
-    }
+    .card:hover { box-shadow: var(--shadow-hover); }
     .card-header {
       display: flex;
       align-items: center;
@@ -469,12 +453,8 @@
       border-radius: var(--radius) var(--radius) 0 0;
       position: relative;
     }
-    .card-header:hover {
-      background: rgba(11, 26, 51, 0.03);
-    }
-    .card-header:active {
-      transform: scale(0.99);
-    }
+    .card-header:hover { background: rgba(11,26,51,0.03); }
+    .card-header:active { transform: scale(0.99); }
     .card-icon {
       width: 38px;
       height: 38px;
@@ -485,24 +465,12 @@
       font-size: 20px;
       flex-shrink: 0;
     }
-    .card-icon.icon-teal {
-      background: #e0f2f1;
-    }
-    .card-icon.icon-gold {
-      background: #fef7e0;
-    }
-    .card-icon.icon-mint {
-      background: #e0f2f1;
-    }
-    .card-icon.icon-navy {
-      background: #e3f0ff;
-    }
-    .card-icon.icon-red {
-      background: #fde8e8;
-    }
-    .card-icon.icon-orange {
-      background: #fff3e0;
-    }
+    .card-icon.icon-teal { background: #e0f2f1; }
+    .card-icon.icon-gold { background: #fef7e0; }
+    .card-icon.icon-mint { background: #e0f2f1; }
+    .card-icon.icon-navy { background: #e3f0ff; }
+    .card-icon.icon-red { background: #fde8e8; }
+    .card-icon.icon-orange { background: #fff3e0; }
     .card-title {
       font-weight: 700;
       font-size: 17px;
@@ -515,9 +483,7 @@
       transition: transform var(--transition);
       flex-shrink: 0;
     }
-    .card.open .card-chevron {
-      transform: rotate(180deg);
-    }
+    .card.open .card-chevron { transform: rotate(180deg); }
     .card-body {
       max-height: 0;
       overflow: hidden;
@@ -528,29 +494,19 @@
       max-height: 3000px;
       padding: 0 20px 20px;
     }
-    .card-inner {
-      padding-top: 4px;
-    }
+    .card-inner { padding-top: 4px; }
 
     /* day blocks */
-    .day-block {
-      margin-bottom: 18px;
-    }
+    .day-block { margin-bottom: 18px; }
     .day-label {
       font-weight: 700;
       font-size: 15px;
       margin-bottom: 10px;
       padding-right: 4px;
     }
-    .day-label.green {
-      color: #4caf50;
-    }
-    .day-label.blue {
-      color: #42a5f5;
-    }
-    .day-label.purple {
-      color: #ab47bc;
-    }
+    .day-label.green { color: #4caf50; }
+    .day-label.blue { color: #42a5f5; }
+    .day-label.purple { color: #ab47bc; }
     .activity-list {
       display: flex;
       flex-direction: column;
@@ -577,24 +533,11 @@
       margin-top: 7px;
       flex-shrink: 0;
     }
-    .dot-green {
-      background: #4caf50;
-    }
-    .dot-blue {
-      background: #42a5f5;
-    }
-    .dot-purple {
-      background: #ab47bc;
-    }
-    .activity-text {
-      font-weight: 500;
-      font-size: 14px;
-    }
-    .activity-sub {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 1px;
-    }
+    .dot-green { background: #4caf50; }
+    .dot-blue { background: #42a5f5; }
+    .dot-purple { background: #ab47bc; }
+    .activity-text { font-weight: 500; font-size: 14px; }
+    .activity-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
 
     /* corners */
     .corners-grid {
@@ -617,101 +560,32 @@
     }
     .corner-card:hover {
       transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.07);
     }
-    .corner-card:active {
-      transform: scale(0.96);
-    }
-    .corner-card .corner-emoji {
-      font-size: 26px;
-    }
-    .corner-card .corner-name {
-      font-size: 13px;
-      font-weight: 500;
-    }
-    .corner-card.c-red {
-      border-color: #ef9a9a;
-      background: #fff5f5;
-    }
-    .corner-card.c-blue {
-      border-color: #90caf9;
-      background: #f3faff;
-    }
-    .corner-card.c-yellow {
-      border-color: #ffd54f;
-      background: #fffde7;
-    }
-    .corner-card.c-purple {
-      border-color: #ce93d8;
-      background: #f8f0fc;
-    }
-    .corner-card.c-orange {
-      border-color: #ffb74d;
-      background: #fff3e0;
-    }
-    .corner-card.c-cyan {
-      border-color: #80deea;
-      background: #f0fdfe;
-    }
-    .corner-card.c-green {
-      border-color: #81c784;
-      background: #f1faf1;
-    }
-    .corner-card.c-teal {
-      border-color: #4db6ac;
-      background: #f0faf8;
-    }
-    .corner-card.c-pink {
-      border-color: #f48fb1;
-      background: #fdf0f4;
-    }
-    .corner-card.c-brown {
-      border-color: #a1887f;
-      background: #f6f0ed;
-    }
-    body.dark .corner-card {
-      background: #253040;
-    }
-    body.dark .corner-card.c-red {
-      background: #2a1a1a;
-      border-color: #7a4a4a;
-    }
-    body.dark .corner-card.c-blue {
-      background: #1a263a;
-      border-color: #3a5a8a;
-    }
-    body.dark .corner-card.c-yellow {
-      background: #2a2a1a;
-      border-color: #8a7a3a;
-    }
-    body.dark .corner-card.c-purple {
-      background: #2a1a3a;
-      border-color: #7a4a8a;
-    }
-    body.dark .corner-card.c-orange {
-      background: #2a1f1a;
-      border-color: #8a5a3a;
-    }
-    body.dark .corner-card.c-cyan {
-      background: #1a2a2a;
-      border-color: #3a7a7a;
-    }
-    body.dark .corner-card.c-green {
-      background: #1a2a1a;
-      border-color: #3a7a3a;
-    }
-    body.dark .corner-card.c-teal {
-      background: #1a2a2a;
-      border-color: #3a7a7a;
-    }
-    body.dark .corner-card.c-pink {
-      background: #2a1a2a;
-      border-color: #7a4a6a;
-    }
-    body.dark .corner-card.c-brown {
-      background: #2a221a;
-      border-color: #7a5a3a;
-    }
+    .corner-card:active { transform: scale(0.96); }
+    .corner-card .corner-emoji { font-size: 26px; }
+    .corner-card .corner-name { font-size: 13px; font-weight: 500; }
+    .corner-card.c-red { border-color: #ef9a9a; background: #fff5f5; }
+    .corner-card.c-blue { border-color: #90caf9; background: #f3faff; }
+    .corner-card.c-yellow { border-color: #ffd54f; background: #fffde7; }
+    .corner-card.c-purple { border-color: #ce93d8; background: #f8f0fc; }
+    .corner-card.c-orange { border-color: #ffb74d; background: #fff3e0; }
+    .corner-card.c-cyan { border-color: #80deea; background: #f0fdfe; }
+    .corner-card.c-green { border-color: #81c784; background: #f1faf1; }
+    .corner-card.c-teal { border-color: #4db6ac; background: #f0faf8; }
+    .corner-card.c-pink { border-color: #f48fb1; background: #fdf0f4; }
+    .corner-card.c-brown { border-color: #a1887f; background: #f6f0ed; }
+    body.dark .corner-card { background: #253040; }
+    body.dark .corner-card.c-red { background: #2a1a1a; border-color: #7a4a4a; }
+    body.dark .corner-card.c-blue { background: #1a263a; border-color: #3a5a8a; }
+    body.dark .corner-card.c-yellow { background: #2a2a1a; border-color: #8a7a3a; }
+    body.dark .corner-card.c-purple { background: #2a1a3a; border-color: #7a4a8a; }
+    body.dark .corner-card.c-orange { background: #2a1f1a; border-color: #8a5a3a; }
+    body.dark .corner-card.c-cyan { background: #1a2a2a; border-color: #3a7a7a; }
+    body.dark .corner-card.c-green { background: #1a2a1a; border-color: #3a7a3a; }
+    body.dark .corner-card.c-teal { background: #1a2a2a; border-color: #3a7a7a; }
+    body.dark .corner-card.c-pink { background: #2a1a2a; border-color: #7a4a6a; }
+    body.dark .corner-card.c-brown { background: #2a221a; border-color: #7a5a3a; }
 
     /* contacts */
     .contact-list {
@@ -744,14 +618,8 @@
       font-size: 20px;
       flex-shrink: 0;
     }
-    .contact-name {
-      font-weight: 600;
-      font-size: 15px;
-    }
-    .contact-role {
-      font-size: 12px;
-      color: var(--muted);
-    }
+    .contact-name { font-weight: 600; font-size: 15px; }
+    .contact-role { font-size: 12px; color: var(--muted); }
     .contact-number {
       display: inline-block;
       margin-top: 2px;
@@ -761,10 +629,7 @@
       font-weight: 600;
       transition: var(--transition);
     }
-    .contact-number:hover {
-      color: var(--navy);
-      transform: translateX(-4px);
-    }
+    .contact-number:hover { color: var(--navy); transform: translateX(-4px); }
 
     /* links */
     .links-list {
@@ -787,11 +652,9 @@
     .link-item:hover {
       background: #e8ecf3;
       transform: translateX(-4px);
-      border-color: rgba(11, 26, 51, 0.06);
+      border-color: rgba(11,26,51,0.06);
     }
-    .link-item:active {
-      transform: scale(0.98);
-    }
+    .link-item:active { transform: scale(0.98); }
     .link-icon {
       width: 40px;
       height: 40px;
@@ -802,24 +665,15 @@
       font-size: 18px;
       flex-shrink: 0;
     }
-    .link-text-main {
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .link-text-sub {
-      font-size: 12px;
-      color: var(--muted);
-    }
+    .link-text-main { font-weight: 600; font-size: 14px; }
+    .link-text-sub { font-size: 12px; color: var(--muted); }
     .link-arrow {
       margin-right: auto;
       font-size: 16px;
       color: var(--muted);
       transition: var(--transition);
     }
-    .link-item:hover .link-arrow {
-      transform: translateX(-6px);
-      color: var(--navy);
-    }
+    .link-item:hover .link-arrow { transform: translateX(-6px); color: var(--navy); }
 
     /* digital grid */
     .digital-grid {
@@ -838,17 +692,10 @@
     .digital-item:hover {
       transform: translateY(-4px);
       background: #e8ecf3;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
     }
-    .digital-item .di-icon {
-      font-size: 28px;
-      margin-bottom: 4px;
-      display: block;
-    }
-    .digital-item .di-label {
-      font-size: 12px;
-      font-weight: 500;
-    }
+    .digital-item .di-icon { font-size: 28px; margin-bottom: 4px; display: block; }
+    .digital-item .di-label { font-size: 12px; font-weight: 500; }
 
     /* registration */
     .reg-form {
@@ -862,34 +709,18 @@
       gap: 12px;
     }
     @media (max-width: 520px) {
-      .reg-form-row {
-        grid-template-columns: 1fr;
-      }
-      .corners-grid {
-        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-      }
-      .digital-grid {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      }
+      .reg-form-row { grid-template-columns: 1fr; }
+      .corners-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+      .digital-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
       .progress-tracker {
         flex-wrap: nowrap;
         overflow-x: auto;
         gap: 4px;
         padding: 10px 12px;
       }
-      .progress-step {
-        font-size: 11px;
-        padding: 2px 6px;
-        white-space: nowrap;
-      }
-      .progress-step .step-num {
-        width: 24px;
-        height: 24px;
-        font-size: 10px;
-      }
-      .progress-line {
-        min-width: 12px;
-      }
+      .progress-step { font-size: 11px; padding: 2px 6px; white-space: nowrap; }
+      .progress-step .step-num { width: 24px; height: 24px; font-size: 10px; }
+      .progress-line { min-width: 12px; }
     }
     .reg-form-group {
       display: flex;
@@ -916,12 +747,10 @@
     .reg-form-group select:focus {
       outline: none;
       border-color: var(--teal);
-      box-shadow: 0 0 0 4px rgba(14, 124, 123, 0.12);
+      box-shadow: 0 0 0 4px rgba(14,124,123,0.12);
     }
     .reg-form-group input:hover,
-    .reg-form-group select:hover {
-      border-color: #b0bec5;
-    }
+    .reg-form-group select:hover { border-color: #b0bec5; }
     .reg-actions {
       display: flex;
       gap: 12px;
@@ -941,18 +770,16 @@
       align-items: center;
       gap: 8px;
     }
-    .btn:active {
-      transform: scale(0.96);
-    }
+    .btn:active { transform: scale(0.96); }
     .btn-primary {
       background: var(--navy);
       color: white;
-      box-shadow: 0 4px 14px rgba(11, 26, 51, 0.2);
+      box-shadow: 0 4px 14px rgba(11,26,51,0.2);
     }
     .btn-primary:hover {
       background: #1a3050;
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(11, 26, 51, 0.25);
+      box-shadow: 0 8px 24px rgba(11,26,51,0.25);
     }
     .btn-success {
       background: var(--teal);
@@ -990,14 +817,8 @@
       animation: slideDown 0.4s ease;
     }
     @keyframes slideDown {
-      0% {
-        opacity: 0;
-        transform: translateY(-12px) scale(0.97);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      0% { opacity: 0; transform: translateY(-12px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
     .msg-box.success {
       display: block;
@@ -1020,7 +841,65 @@
       color: #ef9a9a;
     }
 
-    /* admin panel */
+    /* ===== ADMIN ACCESS ===== */
+    .admin-access {
+      text-align: center;
+      margin-top: 24px;
+    }
+    .admin-access .admin-login {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      background: var(--card-bg);
+      padding: 8px 14px 8px 10px;
+      border-radius: 40px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .admin-access .admin-login input {
+      border: 2px solid var(--border);
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--bg);
+      color: var(--text);
+      width: 150px;
+      transition: var(--transition);
+      direction: ltr;
+    }
+    .admin-access .admin-login input:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(14,124,123,0.15);
+    }
+    .admin-access .admin-login .btn {
+      padding: 6px 18px;
+      font-size: 13px;
+    }
+    .admin-access .admin-login .btn-success {
+      background: var(--teal);
+      color: white;
+    }
+    .admin-access .admin-login .btn-success:hover {
+      background: #0b6b6a;
+    }
+    .admin-access .admin-login .btn-outline {
+      border-color: var(--muted);
+      color: var(--muted);
+    }
+    .admin-access .admin-login .btn-outline:hover {
+      background: var(--muted);
+      color: var(--bg);
+    }
+    .admin-access .login-error {
+      color: var(--red);
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+    }
+
+    /* ===== ADMIN PANEL ===== */
     #adminPanel {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -1049,9 +928,7 @@
       padding: 8px 10px;
       border-bottom: 1px solid var(--border);
     }
-    #adminPanel tr:hover td {
-      background: var(--offwhite);
-    }
+    #adminPanel tr:hover td { background: var(--offwhite); }
     .admin-actions {
       display: flex;
       flex-wrap: wrap;
@@ -1075,12 +952,27 @@
       outline: none;
       border-color: var(--teal);
     }
+    .admin-actions .logout-btn {
+      background: transparent;
+      border: 1px solid var(--red);
+      color: var(--red);
+      padding: 6px 14px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    .admin-actions .logout-btn:hover {
+      background: var(--red);
+      color: white;
+    }
 
-    /* certificate modal */
+    /* ===== CERTIFICATE MODAL ===== */
     .cert-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0,0,0,0.6);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
@@ -1088,9 +980,7 @@
       z-index: 9999;
       padding: 20px;
     }
-    .cert-modal.show {
-      display: flex;
-    }
+    .cert-modal.show { display: flex; }
     .cert-modal .cert-content {
       background: var(--card-bg);
       padding: 32px 28px;
@@ -1098,7 +988,7 @@
       max-width: 500px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
       animation: slideDown 0.5s ease;
       border: 2px solid var(--gold);
     }
@@ -1118,10 +1008,7 @@
       font-size: 14px;
       line-height: 1.8;
     }
-    .cert-modal .cert-content .cert-badge {
-      font-size: 48px;
-      margin: 12px 0;
-    }
+    .cert-modal .cert-content .cert-badge { font-size: 48px; margin: 12px 0; }
     .cert-modal .cert-content .btn-close-cert {
       margin-top: 20px;
       background: var(--navy);
@@ -1133,11 +1020,9 @@
       cursor: pointer;
       transition: var(--transition);
     }
-    .cert-modal .cert-content .btn-close-cert:hover {
-      transform: scale(1.04);
-    }
+    .cert-modal .cert-content .btn-close-cert:hover { transform: scale(1.04); }
 
-    /* confetti */
+    /* ===== CONFETTI ===== */
     .confetti-container {
       position: fixed;
       top: 0;
@@ -1156,17 +1041,11 @@
       animation: confettiDrop 1.8s ease forwards;
     }
     @keyframes confettiDrop {
-      0% {
-        opacity: 1;
-        transform: translateY(0) rotate(0deg) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(120px) rotate(720deg) scale(0.2);
-      }
+      0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: translateY(120px) rotate(720deg) scale(0.2); }
     }
 
-    /* footer */
+    /* ===== FOOTER ===== */
     footer {
       margin-top: 32px;
       padding: 24px 16px;
@@ -1176,22 +1055,18 @@
       border-top: 1px solid var(--border);
       line-height: 1.8;
     }
-    footer strong {
-      color: var(--text);
-    }
+    footer strong { color: var(--text); }
 
-    /* tilt */
+    /* ===== TILT ===== */
     .tilt {
       transition: transform 0.1s ease;
       transform-style: preserve-3d;
       will-change: transform;
     }
     .tilt .card-header,
-    .tilt .card-body {
-      transform: translateZ(2px);
-    }
+    .tilt .card-body { transform: translateZ(2px); }
 
-    /* reveal */
+    /* ===== REVEAL ===== */
     .reveal {
       opacity: 0;
       transform: translateY(36px) scale(0.96);
@@ -1201,33 +1076,10 @@
       opacity: 1;
       transform: translateY(0) scale(1);
     }
-
-    /* sound toggle */
-    .sound-toggle {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      z-index: 999;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 40px;
-      padding: 8px 14px;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      color: var(--text);
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .sound-toggle:hover {
-      transform: scale(1.05);
-    }
   </style>
 </head>
 <body>
-  <!-- ===== SPLASH SCREEN ===== -->
+  <!-- ===== SPLASH ===== -->
   <div id="splash">
     <h1>🎓 يوم التوجيه</h1>
     <p>اختر تخصصك بذكاء</p>
@@ -1551,9 +1403,14 @@
 
   </div>
 
-  <!-- ===== ADMIN BUTTON ===== -->
-  <div style="text-align:center;margin-top:24px;">
-    <button id="adminToggleBtn" class="btn btn-outline" style="font-size:13px;">🔐 إدارة المسجلين</button>
+  <!-- ===== ADMIN ACCESS ===== -->
+  <div class="admin-access">
+    <div class="admin-login" id="adminLoginBox">
+      <input type="password" id="adminPasswordInput" placeholder="🔑 كود الإدارة" maxlength="20" />
+      <button class="btn btn-success" id="adminLoginBtn">دخول</button>
+      <button class="btn btn-outline" id="adminLogoutBtn" style="display:none;">تسجيل الخروج</button>
+    </div>
+    <div class="login-error" id="loginError">⚠️ كود غير صحيح، حاول مرة أخرى.</div>
   </div>
 
   <!-- ===== ADMIN PANEL ===== -->
@@ -1564,6 +1421,7 @@
       <button id="exportCsvBtn" class="btn btn-success" style="padding:8px 18px;font-size:13px;">📥 تصدير CSV</button>
       <button id="clearAllBtn" class="btn btn-danger" style="padding:8px 18px;font-size:13px;">🗑️ مسح الكل</button>
       <span style="align-self:center;font-size:14px;color:var(--muted);">👥 <strong id="adminCount">0</strong> مسجّل</span>
+      <button class="logout-btn" id="adminLogoutBtn2">🚪 خروج</button>
     </div>
     <div style="overflow-x:auto;">
       <table>
@@ -1600,26 +1458,21 @@
 
   <script>
     // ============================================================
-    //  SPLASH SCREEN
+    //  SPLASH
     // ============================================================
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('splash').classList.add('hide');
-        setTimeout(() => {
-          document.getElementById('splash').style.display = 'none';
-        }, 800);
+        setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 800);
       }, 2000);
     });
 
     // ============================================================
-    //  THEME TOGGLE
+    //  THEME
     // ============================================================
     const themeToggle = document.getElementById('themeToggle');
     let darkMode = localStorage.getItem('darkMode') === 'true';
-    if (darkMode) {
-      document.body.classList.add('dark');
-      themeToggle.textContent = '☀️';
-    }
+    if (darkMode) { document.body.classList.add('dark'); themeToggle.textContent = '☀️'; }
     themeToggle.addEventListener('click', () => {
       darkMode = !darkMode;
       document.body.classList.toggle('dark', darkMode);
@@ -1628,12 +1481,11 @@
     });
 
     // ============================================================
-    //  SOUND FX (Web Audio)
+    //  SOUND
     // ============================================================
     let soundEnabled = true;
     const soundToggle = document.getElementById('soundToggle');
     let audioCtx = null;
-
     function playSound(type = 'click') {
       if (!soundEnabled) return;
       try {
@@ -1643,72 +1495,51 @@
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         if (type === 'click') {
-          osc.frequency.value = 800;
-          osc.type = 'sine';
-          gain.gain.value = 0.08;
-          osc.start();
-          osc.stop(audioCtx.currentTime + 0.06);
+          osc.frequency.value = 800; osc.type = 'sine'; gain.gain.value = 0.08;
+          osc.start(); osc.stop(audioCtx.currentTime + 0.06);
         } else if (type === 'success') {
-          osc.frequency.value = 1200;
-          osc.type = 'sine';
-          gain.gain.value = 0.1;
-          osc.start();
-          osc.stop(audioCtx.currentTime + 0.15);
+          osc.frequency.value = 1200; osc.type = 'sine'; gain.gain.value = 0.1;
+          osc.start(); osc.stop(audioCtx.currentTime + 0.15);
           setTimeout(() => {
             const osc2 = audioCtx.createOscillator();
             const gain2 = audioCtx.createGain();
-            osc2.connect(gain2);
-            gain2.connect(audioCtx.destination);
-            osc2.frequency.value = 1600;
-            osc2.type = 'sine';
-            gain2.gain.value = 0.08;
-            osc2.start();
-            osc2.stop(audioCtx.currentTime + 0.1);
+            osc2.connect(gain2); gain2.connect(audioCtx.destination);
+            osc2.frequency.value = 1600; osc2.type = 'sine'; gain2.gain.value = 0.08;
+            osc2.start(); osc2.stop(audioCtx.currentTime + 0.1);
           }, 100);
         } else if (type === 'error') {
-          osc.frequency.value = 300;
-          osc.type = 'sawtooth';
-          gain.gain.value = 0.06;
-          osc.start();
-          osc.stop(audioCtx.currentTime + 0.2);
+          osc.frequency.value = 300; osc.type = 'sawtooth'; gain.gain.value = 0.06;
+          osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
       } catch (e) { /* ignore */ }
     }
-
     soundToggle.addEventListener('click', () => {
       soundEnabled = !soundEnabled;
       soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
       if (soundEnabled) playSound('click');
     });
-
-    // attach sound to interactive elements
+    // attach sound to clicks
     document.addEventListener('click', (e) => {
-      const target = e.target.closest(
-        '.card-header, .corner-card, .progress-step, .btn, .link-item, .contact-number, .theme-toggle, .sound-toggle, .btn-close-cert, #adminToggleBtn'
-        );
+      const target = e.target.closest('.card-header, .corner-card, .progress-step, .btn, .link-item, .contact-number, .theme-toggle, .sound-toggle, .btn-close-cert, #adminLoginBtn, #adminLogoutBtn, #adminLogoutBtn2');
       if (target) {
-        if (target.classList.contains('btn-primary') || target.closest('#registerBtn')) return; // handled separately
+        if (target.closest('#registerBtn')) return;
+        if (target.id === 'adminLoginBtn' || target.id === 'adminLogoutBtn' || target.id === 'adminLogoutBtn2') return;
         playSound('click');
       }
     });
 
     // ============================================================
-    //  COUNTDOWN (target: 2026-07-10 09:00:00)
+    //  COUNTDOWN (2026-07-10 09:00)
     // ============================================================
     const targetDate = new Date('2026-07-10T09:00:00').getTime();
-
     function updateCountdown() {
       const now = Date.now();
       let diff = targetDate - now;
       if (diff < 0) diff = 0;
-      const days = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-      const hours = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
-      const minutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
-      const seconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
-      document.getElementById('cdDays').textContent = days;
-      document.getElementById('cdHours').textContent = hours;
-      document.getElementById('cdMinutes').textContent = minutes;
-      document.getElementById('cdSeconds').textContent = seconds;
+      document.getElementById('cdDays').textContent = String(Math.floor(diff/(1000*60*60*24))).padStart(2,'0');
+      document.getElementById('cdHours').textContent = String(Math.floor((diff/(1000*60*60))%24)).padStart(2,'0');
+      document.getElementById('cdMinutes').textContent = String(Math.floor((diff/(1000*60))%60)).padStart(2,'0');
+      document.getElementById('cdSeconds').textContent = String(Math.floor((diff/1000)%60)).padStart(2,'0');
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
@@ -1720,15 +1551,9 @@
       const card = headerEl.closest('.card');
       if (!card) return;
       const wasOpen = card.classList.contains('open');
-      document.querySelectorAll('.card.open').forEach(c => {
-        if (c !== card) c.classList.remove('open');
-      });
-      if (wasOpen) {
-        card.classList.remove('open');
-      } else {
-        card.classList.add('open');
-        playSound('click');
-      }
+      document.querySelectorAll('.card.open').forEach(c => { if (c !== card) c.classList.remove('open'); });
+      if (wasOpen) card.classList.remove('open');
+      else card.classList.add('open');
     }
 
     // ============================================================
@@ -1736,11 +1561,7 @@
     // ============================================================
     const revealEls = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
     revealEls.forEach(el => revealObserver.observe(el));
 
@@ -1752,7 +1573,7 @@
         const rect = this.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
         const y = (e.clientY - rect.top) / rect.height - 0.5;
-        this.style.transform = `perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
+        this.style.transform = `perspective(800px) rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
       });
       el.addEventListener('mouseleave', function() {
         this.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)';
@@ -1762,7 +1583,7 @@
     });
 
     // ============================================================
-    //  PROGRESS TRACKER
+    //  PROGRESS
     // ============================================================
     const steps = document.querySelectorAll('.progress-step');
     const fill = document.getElementById('progressFill');
@@ -1772,13 +1593,9 @@
           s.classList.toggle('active', idx === i);
           s.classList.toggle('done', idx < i);
         });
-        const pct = (i / (steps.length - 1)) * 100;
-        fill.style.width = pct + '%';
+        fill.style.width = (i / (steps.length - 1)) * 100 + '%';
         const cards = document.querySelectorAll('.card');
-        if (cards[i]) {
-          cards[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
-          cards[i].classList.add('open');
-        }
+        if (cards[i]) { cards[i].scrollIntoView({ behavior: 'smooth', block: 'start' }); cards[i].classList.add('open'); }
         playSound('click');
       });
     });
@@ -1812,13 +1629,11 @@
     function getRegistrants() {
       try { return JSON.parse(localStorage.getItem('registrants')) || []; } catch { return []; }
     }
-
     function saveRegistrants(list) {
       localStorage.setItem('registrants', JSON.stringify(list));
       updateCounters();
-      renderAdminTable();
+      if (isAdminLoggedIn()) renderAdminTable();
     }
-
     function updateCounters() {
       const list = getRegistrants();
       const count = list.length;
@@ -1828,45 +1643,37 @@
       participantCountEl.classList.add('pop');
       document.getElementById('adminCount').textContent = count;
       statReg.textContent = count;
-      // certificates count = registrants with certificate flag
       const certs = list.filter(r => r.certificate).length;
       statCert.textContent = certs;
     }
-
     function showMsg(text, type) {
       msgBox.textContent = text;
       msgBox.className = 'msg-box ' + type;
       msgBox.style.display = 'block';
     }
+    function clearMsg() { msgBox.style.display = 'none'; msgBox.className = 'msg-box'; }
 
-    function clearMsg() {
-      msgBox.style.display = 'none';
-      msgBox.className = 'msg-box';
-    }
-
-    // Confetti
     function fireConfetti() {
       const container = document.createElement('div');
       container.className = 'confetti-container';
       document.body.appendChild(container);
-      const colors = ['#f44336', '#e91e63', '#9c27b0', '#3f51b5', '#4caf50', '#ffeb3b', '#ff9800', '#00bcd4'];
+      const colors = ['#f44336','#e91e63','#9c27b0','#3f51b5','#4caf50','#ffeb3b','#ff9800','#00bcd4'];
       for (let i = 0; i < 60; i++) {
         const piece = document.createElement('div');
         piece.className = 'confetti-piece';
-        piece.style.left = Math.random() * 100 + '%';
+        piece.style.left = Math.random()*100+'%';
         piece.style.top = '-10px';
-        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.width = (Math.random() * 8 + 4) + 'px';
-        piece.style.height = (Math.random() * 8 + 4) + 'px';
-        piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-        piece.style.animationDuration = (Math.random() * 1.2 + 0.8) + 's';
-        piece.style.animationDelay = (Math.random() * 0.6) + 's';
+        piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+        piece.style.width = (Math.random()*8+4)+'px';
+        piece.style.height = (Math.random()*8+4)+'px';
+        piece.style.borderRadius = Math.random()>0.5?'50%':'2px';
+        piece.style.animationDuration = (Math.random()*1.2+0.8)+'s';
+        piece.style.animationDelay = (Math.random()*0.6)+'s';
         container.appendChild(piece);
       }
       setTimeout(() => container.remove(), 2500);
     }
 
-    // Certificate modal
     function showCertificate(name) {
       document.getElementById('certName').textContent = name;
       document.getElementById('certFullName').textContent = name;
@@ -1874,7 +1681,6 @@
       document.getElementById('certModal').classList.add('show');
       playSound('success');
     }
-
     window.closeCert = function() {
       document.getElementById('certModal').classList.remove('show');
     };
@@ -1888,99 +1694,118 @@
       const highSchool = document.getElementById('highSchool').value.trim();
       const branch = document.getElementById('branch').value;
       const wilaya = document.getElementById('wilaya').value;
-
       if (!fullName || !phone || !highSchool || !branch) {
         showMsg('⚠️ الرجاء ملء جميع الحقول المطلوبة (*)', 'error');
         playSound('error');
         return;
       }
-
       const registrants = getRegistrants();
       if (registrants.some(r => r.phone === phone)) {
         showMsg('⚠️ هذا رقم الهاتف مسجل مسبقاً.', 'error');
         playSound('error');
         return;
       }
-
       const newEntry = {
         id: Date.now(),
-        fullName,
-        phone,
-        email,
-        highSchool,
-        branch,
-        wilaya,
+        fullName, phone, email, highSchool, branch, wilaya,
         registeredAt: new Date().toLocaleString('ar-DZ'),
         certificate: false
       };
-
       registrants.push(newEntry);
       saveRegistrants(registrants);
       showMsg('✅ تم تسجيلك بنجاح! 🎉', 'success');
       form.reset();
       fireConfetti();
       playSound('success');
-
-      // show certificate after 1.5s
       setTimeout(() => {
-        // mark certificate as issued
         const list = getRegistrants();
         const found = list.find(r => r.id === newEntry.id);
         if (found) found.certificate = true;
         saveRegistrants(list);
         showCertificate(fullName);
       }, 1500);
-
-      // open admin panel
-      const panel = document.getElementById('adminPanel');
-      if (panel.style.display === 'none') {
-        panel.style.display = 'block';
-        document.getElementById('adminToggleBtn').textContent = '🔒 إخفاء الإدارة';
-      }
     });
 
     // ============================================================
-    //  ADMIN PANEL
+    //  ADMIN LOGIN / LOGOUT
     // ============================================================
-    const adminToggleBtn = document.getElementById('adminToggleBtn');
-    const adminPanel = document.getElementById('adminPanel');
+    const ADMIN_CODE = 'admin123';
+    let adminLoggedIn = false;
+
+    const adminPasswordInput = document.getElementById('adminPasswordInput');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+    const adminLogoutBtn2 = document.getElementById('adminLogoutBtn2');
+    const loginError = document.getElementById('loginError');
+    const adminPanelEl = document.getElementById('adminPanel');
+    const adminLoginBox = document.getElementById('adminLoginBox');
+
+    function isAdminLoggedIn() { return adminLoggedIn; }
+
+    function adminLogin() {
+      const pwd = adminPasswordInput.value.trim();
+      if (pwd === ADMIN_CODE) {
+        adminLoggedIn = true;
+        loginError.style.display = 'none';
+        adminPanelEl.style.display = 'block';
+        adminLoginBtn.style.display = 'none';
+        adminLogoutBtn.style.display = 'inline-flex';
+        adminPasswordInput.style.display = 'none';
+        adminPasswordInput.value = '';
+        renderAdminTable();
+        playSound('success');
+        // hide error if any
+      } else {
+        loginError.style.display = 'block';
+        playSound('error');
+        setTimeout(() => { loginError.style.display = 'none'; }, 3000);
+      }
+    }
+
+    function adminLogout() {
+      adminLoggedIn = false;
+      adminPanelEl.style.display = 'none';
+      adminLoginBtn.style.display = 'inline-flex';
+      adminLogoutBtn.style.display = 'none';
+      adminPasswordInput.style.display = 'inline-block';
+      loginError.style.display = 'none';
+      playSound('click');
+    }
+
+    adminLoginBtn.addEventListener('click', adminLogin);
+    adminPasswordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') adminLogin(); });
+    adminLogoutBtn.addEventListener('click', adminLogout);
+    adminLogoutBtn2.addEventListener('click', adminLogout);
+
+    // ============================================================
+    //  ADMIN TABLE RENDER
+    // ============================================================
     const adminSearch = document.getElementById('adminSearch');
     const adminTableBody = document.getElementById('adminTableBody');
     const exportCsvBtn = document.getElementById('exportCsvBtn');
     const clearAllBtn = document.getElementById('clearAllBtn');
 
-    adminToggleBtn.addEventListener('click', function() {
-      const isHidden = adminPanel.style.display === 'none';
-      adminPanel.style.display = isHidden ? 'block' : 'none';
-      this.textContent = isHidden ? '🔒 إخفاء الإدارة' : '🔐 إدارة المسجلين';
-      if (isHidden) renderAdminTable();
-      playSound('click');
-    });
-
     function renderAdminTable(filter = '') {
       const list = getRegistrants();
-      const filtered = list.filter(r =>
-        r.fullName.includes(filter) || r.phone.includes(filter)
-      );
+      const filtered = list.filter(r => r.fullName.includes(filter) || r.phone.includes(filter));
       if (filtered.length === 0) {
-        adminTableBody.innerHTML =
-          `<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted);">لا يوجد مسجلون</td></tr>`;
+        adminTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted);">لا يوجد مسجلون</td></tr>`;
         return;
       }
       let html = '';
       filtered.forEach((r, i) => {
         html += `<tr>
-                  <td>${i + 1}</td>
-                  <td><strong>${r.fullName}</strong> ${r.certificate ? '🏅' : ''}</td>
-                  <td>${r.phone}</td>
-                  <td>${r.email || '—'}</td>
-                  <td>${r.highSchool}</td>
-                  <td>${r.branch}</td>
-                  <td>${r.wilaya || '—'}</td>
-                  <td style="text-align:center;">
-                    <button onclick="deleteRegistrant(${r.id})" style="background:var(--red);color:#fff;border:none;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;">✕</button>
-                  </td>
-                </tr>`;
+          <td>${i+1}</td>
+          <td><strong>${r.fullName}</strong> ${r.certificate ? '🏅' : ''}</td>
+          <td>${r.phone}</td>
+          <td>${r.email || '—'}</td>
+          <td>${r.highSchool}</td>
+          <td>${r.branch}</td>
+          <td>${r.wilaya || '—'}</td>
+          <td style="text-align:center;">
+            <button onclick="deleteRegistrant(${r.id})" style="background:var(--red);color:#fff;border:none;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;">✕</button>
+          </td>
+        </tr>`;
       });
       adminTableBody.innerHTML = html;
       document.getElementById('adminCount').textContent = list.length;
@@ -1991,26 +1816,22 @@
       let list = getRegistrants();
       list = list.filter(r => r.id !== id);
       saveRegistrants(list);
-      renderAdminTable(adminSearch.value);
+      if (isAdminLoggedIn()) renderAdminTable(adminSearch.value);
       updateCounters();
       playSound('click');
     };
 
     adminSearch.addEventListener('input', function() {
-      renderAdminTable(this.value);
+      if (isAdminLoggedIn()) renderAdminTable(this.value);
     });
 
     exportCsvBtn.addEventListener('click', function() {
       const list = getRegistrants();
       if (list.length === 0) { alert('لا يوجد مسجلون لتصديرهم.'); return; }
-      const headers = ['الاسم', 'الهاتف', 'البريد', 'الثانوية', 'الشعبة', 'الولاية', 'تاريخ التسجيل', 'شهادة'];
-      const rows = list.map(r => [r.fullName, r.phone, r.email || '', r.highSchool, r.branch, r.wilaya || '', r
-        .registeredAt || '', r.certificate ? 'نعم' : 'لا'
-      ]);
+      const headers = ['الاسم','الهاتف','البريد','الثانوية','الشعبة','الولاية','تاريخ التسجيل','شهادة'];
+      const rows = list.map(r => [r.fullName, r.phone, r.email||'', r.highSchool, r.branch, r.wilaya||'', r.registeredAt||'', r.certificate ? 'نعم' : 'لا']);
       let csv = '\uFEFF' + headers.join(',') + '\n';
-      rows.forEach(row => {
-        csv += row.map(cell => `"${cell}"`).join(',') + '\n';
-      });
+      rows.forEach(row => { csv += row.map(c => `"${c}"`).join(',') + '\n'; });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
@@ -2024,7 +1845,7 @@
       if (!confirm('⚠️ هل أنت متأكد من مسح جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
       if (!confirm('تأكيد نهائي: مسح الكل؟')) return;
       saveRegistrants([]);
-      renderAdminTable('');
+      if (isAdminLoggedIn()) renderAdminTable('');
       updateCounters();
       playSound('click');
     });
@@ -2033,17 +1854,12 @@
     //  INIT
     // ============================================================
     updateCounters();
-    renderAdminTable();
-
     // open first card after splash
     setTimeout(() => {
       const firstCard = document.querySelector('.card');
-      if (firstCard && !firstCard.classList.contains('open')) {
-        firstCard.classList.add('open');
-      }
+      if (firstCard && !firstCard.classList.contains('open')) firstCard.classList.add('open');
     }, 2200);
 
-    // ESC to close all cards
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
         document.querySelectorAll('.card.open').forEach(c => c.classList.remove('open'));
@@ -2051,7 +1867,7 @@
       }
     });
 
-    console.log('🎓 يوم التوجيه الجامعي — النسخة المتطورة مع أنيميشن، صوت، شهادات، وعداد تنازلي!');
+    console.log('🎓 يوم التوجيه الجامعي — نسخة متطورة مع إدارة محمية بكود admin123');
   </script>
 </body>
 </html>
