@@ -157,52 +157,6 @@
     }
     .sound-toggle:hover { transform: scale(1.05); }
 
-    /* ===== COUNTDOWN ===== */
-    .countdown-bar {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .countdown-bar .label {
-      font-weight: 600;
-      font-size: 14px;
-      color: var(--muted);
-    }
-    .countdown-bar .timer {
-      display: flex;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 22px;
-      direction: ltr;
-      font-variant-numeric: tabular-nums;
-    }
-    .countdown-bar .timer span {
-      background: var(--navy);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 8px;
-      min-width: 48px;
-      text-align: center;
-    }
-    .countdown-bar .timer .sep {
-      background: transparent;
-      color: var(--muted);
-      padding: 0 2px;
-      min-width: auto;
-    }
-    body.dark .countdown-bar .timer span {
-      background: #2a3a5a;
-      color: #e8edf5;
-    }
-
     /* ===== STATS ROW ===== */
     .stats-row {
       display: grid;
@@ -1112,18 +1066,7 @@
     </div>
   </div>
 
-  <!-- ===== COUNTDOWN ===== -->
-  <div class="countdown-bar reveal">
-    <span class="label">⏳ يبدأ خلال</span>
-    <div class="timer" id="countdownTimer">
-      <span id="cdDays">00</span><span class="sep">:</span>
-      <span id="cdHours">00</span><span class="sep">:</span>
-      <span id="cdMinutes">00</span><span class="sep">:</span>
-      <span id="cdSeconds">00</span>
-    </div>
-  </div>
-
-  <!-- ===== STATS ===== -->
+  <!-- ===== STATS ROW (تم إزالة العد التنازلي) ===== -->
   <div class="stats-row reveal">
     <div class="stat-card"><div class="num" id="statReg">0</div><div class="lbl">مسجل</div></div>
     <div class="stat-card"><div class="num">10</div><div class="lbl">أركان</div></div>
@@ -1529,22 +1472,6 @@
     });
 
     // ============================================================
-    //  COUNTDOWN (2026-07-10 09:00)
-    // ============================================================
-    const targetDate = new Date('2026-07-10T09:00:00').getTime();
-    function updateCountdown() {
-      const now = Date.now();
-      let diff = targetDate - now;
-      if (diff < 0) diff = 0;
-      document.getElementById('cdDays').textContent = String(Math.floor(diff/(1000*60*60*24))).padStart(2,'0');
-      document.getElementById('cdHours').textContent = String(Math.floor((diff/(1000*60*60))%24)).padStart(2,'0');
-      document.getElementById('cdMinutes').textContent = String(Math.floor((diff/(1000*60))%60)).padStart(2,'0');
-      document.getElementById('cdSeconds').textContent = String(Math.floor((diff/1000)%60)).padStart(2,'0');
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-
-    // ============================================================
     //  CARD TOGGLE
     // ============================================================
     function toggleCard(headerEl) {
@@ -1754,7 +1681,6 @@
         adminPasswordInput.value = '';
         renderAdminTable();
         playSound('success');
-        // hide error if any
       } else {
         loginError.style.display = 'block';
         playSound('error');
@@ -1867,7 +1793,7 @@
       }
     });
 
-    console.log('🎓 يوم التوجيه الجامعي — نسخة متطورة مع إدارة محمية بكود admin123');
+    console.log('🎓 يوم التوجيه الجامعي — تم إزالة العد التنازلي، مع إدارة محمية بكود admin123');
   </script>
 </body>
 </html>
