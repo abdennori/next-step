@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>يوم التوجيه الجامعي — النسخة السحابية</title>
+    <title>يوم التوجيه الجامعي — النسخة المتطورة</title>
 
     <!-- ===== FIREBASE SDK ===== -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <style>
-        /* ===== RESET & BASE ===== */
+        /* ===== جميع أنماط CSS كما هي (لم تتغير) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -1860,7 +1860,9 @@
                         </div>
                     </form>
                     <div id="msgBox" class="msg-box"></div>
-                    <p style="font-size:11px;color:var(--muted);margin-top:16px;text-align:center;">🔒 يتم تسجيل بياناتك بشكل آمن في السحاب، وتظهر للجميع فوراً.</p>
+                    <p style="font-size:11px;color:var(--muted);margin-top:16px;text-align:center;">
+                        🔒 البيانات تُحفظ في السحاب (Firebase) — وفي حال تعذر الاتصال، تُحفظ محلياً كنسخة احتياطية.
+                    </p>
                 </div>
             </div>
         </div>
@@ -1934,9 +1936,10 @@
     </script>
     <script>
         // ============================================================
-        //  ⚠️ IMPORTANT: ضع هنا بيانات مشروعك من Firebase Console ⚠️
+        //  ⚠️ IMPORTANT: ضع بيانات مشروعك من Firebase Console هنا
+        //  إذا تركتها كما هي، سيعمل الموقع باستخدام التخزين المحلي فقط.
         // ============================================================
-       const firebaseConfig = {
+        const firebaseConfig = {
             apiKey: "AIzaSyBjMoi2os-C0DxcumjwKSmhAYboYWfGt64",
             authDomain: "guidance-day.firebaseapp.com",
             databaseURL: "https://guidance-day-default-rtdb.firebaseio.com",
@@ -1946,10 +1949,166 @@
             appId: "1:190184922202:web:175fd4be9c69a117e78c63"
         };
 
-        // ===== تهيئة Firebase =====
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const registrantsRef = database.ref('registrants');
+        // ============================================================
+        //  FORCE HIDE SPLASH — مضمون 100% حتى لو حدث خطأ
+        // ============================================================
+        setTimeout(() => {
+            const splash = document.getElementById('splash');
+            if (splash) {
+                splash.classList.add('hide');
+                setTimeout(() => { splash.style.display = 'none'; }, 800);
+            }
+        }, 2500); // 2.5 ثانية كافية جداً
+
+        // ============================================================
+        //  FIREBASE WITH FALLBACK (LocalStorage)
+        // ============================================================
+        let dbMode = 'initializing';
+        let currentRegistrants = [];
+        let registrantsRef = null;
+
+        // دوال التخزين المحلي (الاحتياطي)
+        function getLocalRegistrants() {
+            try { return JSON.parse(localStorage.getItem('registrants_fallback')) || []; } catch { return []; }
+        }
+
+        function saveLocalRegistrants(list) {
+            localStorage.setItem('registrants_fallback', JSON.stringify(list));
+            currentRegistrants = list;
+            updateAllUI(list);
+        }
+
+        // محاولة تهيئة Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const database = firebase.database();
+            registrantsRef = database.ref('registrants');
+
+            // الاستماع للتغييرات في Firebase
+            registrantsRef.on('value', snapshot => {
+                const data = snapshot.val();
+                const list = data ? Object.values(data) : [];
+                currentRegistrants = list;
+                // حفظ نسخة احتياطية في localStorage
+                localStorage.setItem('registrants_fallback', JSON.stringify(list));
+                updateAllUI(list);
+                if (dbMode !== 'firebase') {
+                    dbMode = 'firebase';
+                    console.log('✅ Firebase connected successfully.');
+                    showToast('✅ متصل بقاعدة البيانات السحابية', 'success');
+                }
+            }, error => {
+                console.warn('⚠️ Firebase connection lost, switching to local backup.', error);
+                dbMode = 'local';
+                loadLocalFallback();
+                showToast('⚠️ تم التبديل إلى التخزين المحلي', 'error');
+            });
+
+            dbMode = 'firebase';
+        } catch (e) {
+            console.error('❌ Firebase initialization failed:', e);
+            dbMode = 'local';
+            loadLocalFallback();
+            showToast('⚠️ تعذر الاتصال بالسحاب، استخدام التخزين المحلي', 'error');
+        }
+
+        function loadLocalFallback() {
+            const list = getLocalRegistrants();
+            currentRegistrants = list;
+            updateAllUI(list);
+        }
+
+        // ============================================================
+        //  دوال الإضافة والحذف (تعمل مع Firebase و LocalStorage)
+        // ============================================================
+        async function addRegistrant(data) {
+            const certId = generateCertId();
+            const entry = {
+                id: Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                fullName: data.fullName,
+                phone: data.phone,
+                email: data.email || '',
+                highSchool: data.highSchool,
+                branch: data.branch,
+                wilaya: data.wilaya,
+                registeredAt: new Date().toLocaleString('ar-DZ'),
+                certificate: true,
+                certId: certId
+            };
+
+            if (dbMode === 'firebase' && registrantsRef) {
+                try {
+                    const newRef = registrantsRef.push();
+                    await newRef.set({ ...entry, id: newRef.key });
+                    return certId;
+                } catch (e) {
+                    console.warn('Firebase write failed, saving locally.', e);
+                    // فشل الكتابة في Firebase، نكتب محلياً
+                    const list = getLocalRegistrants();
+                    list.push(entry);
+                    saveLocalRegistrants(list);
+                    return certId;
+                }
+            } else {
+                // الوضع المحلي
+                const list = getLocalRegistrants();
+                list.push(entry);
+                saveLocalRegistrants(list);
+                return certId;
+            }
+        }
+
+        window.deleteRegistrant = async function(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا المسجل؟')) return;
+            if (dbMode === 'firebase' && registrantsRef) {
+                try {
+                    await registrantsRef.child(id).remove();
+                    showToast('🗑️ تم حذف المسجل', 'info');
+                    return;
+                } catch (e) {
+                    console.warn('Firebase delete failed, deleting locally.', e);
+                }
+            }
+            // حذف محلي
+            let list = getLocalRegistrants();
+            list = list.filter(r => r.id !== id);
+            saveLocalRegistrants(list);
+            showToast('🗑️ تم حذف المسجل (محلياً)', 'info');
+        };
+
+        async function clearAllRegistrants() {
+            if (!confirm('⚠️ هل أنت متأكد من مسح جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
+            if (!confirm('تأكيد نهائي: مسح الكل؟')) return;
+            if (dbMode === 'firebase' && registrantsRef) {
+                try {
+                    await registrantsRef.remove();
+                    showToast('🗑️ تم مسح جميع المسجلين', 'info');
+                    return;
+                } catch (e) {
+                    console.warn('Firebase clear failed, clearing locally.', e);
+                }
+            }
+            saveLocalRegistrants([]);
+            showToast('🗑️ تم مسح جميع المسجلين (محلياً)', 'info');
+        }
+
+        // ============================================================
+        //  UPDATE UI
+        // ============================================================
+        function updateAllUI(list) {
+            const count = list.length;
+            const counterEl = document.getElementById('participantCount');
+            counterEl.textContent = count;
+            counterEl.classList.remove('pop');
+            void counterEl.offsetWidth;
+            counterEl.classList.add('pop');
+
+            document.getElementById('adminCount').textContent = count;
+
+            if (isAdminLoggedIn()) {
+                renderAdminTable(list);
+            }
+        }
 
         // ============================================================
         //  إعدادات التاريخ
@@ -1972,16 +2131,6 @@
         document.getElementById('progDay1').textContent = '— ' + formatDateShort(EVENT_DATES.day1);
         document.getElementById('progDay2').textContent = '— ' + formatDateShort(EVENT_DATES.day2);
         document.getElementById('progDay3').textContent = '— ' + formatDateShort(EVENT_DATES.day3);
-
-        // ============================================================
-        //  SPLASH SCREEN
-        // ============================================================
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('splash').classList.add('hide');
-                setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 800);
-            }, 2000);
-        });
 
         // ============================================================
         //  THEME
@@ -2275,72 +2424,6 @@
         });
 
         // ============================================================
-        //  FIREBASE: READ & UPDATE UI
-        // ============================================================
-        let currentRegistrants = [];
-
-        // استمع لأي تغيير في قاعدة البيانات
-        registrantsRef.on('value', snapshot => {
-            const data = snapshot.val();
-            currentRegistrants = data ? Object.values(data) : [];
-            updateAllUI(currentRegistrants);
-        });
-
-        function updateAllUI(list) {
-            const count = list.length;
-            // تحديث العداد في الهيدر
-            const counterEl = document.getElementById('participantCount');
-            counterEl.textContent = count;
-            counterEl.classList.remove('pop');
-            void counterEl.offsetWidth;
-            counterEl.classList.add('pop');
-
-            // تحديث عداد الإدارة
-            document.getElementById('adminCount').textContent = count;
-
-            // تحديث جدول الإدارة إذا كان المدير مسجل الدخول
-            if (isAdminLoggedIn()) {
-                renderAdminTable(list);
-            }
-        }
-
-        // ============================================================
-        //  FIREBASE: WRITE
-        // ============================================================
-        async function addRegistrant(data) {
-            const newRef = registrantsRef.push();
-            const certId = generateCertId();
-            await newRef.set({
-                id: newRef.key,
-                fullName: data.fullName,
-                phone: data.phone,
-                email: data.email || '',
-                highSchool: data.highSchool,
-                branch: data.branch,
-                wilaya: data.wilaya,
-                registeredAt: new Date().toLocaleString('ar-DZ'),
-                certificate: true,
-                certId: certId
-            });
-            return certId;
-        }
-
-        window.deleteRegistrant = async function(id) {
-            if (!confirm('هل أنت متأكد من حذف هذا المسجل؟')) return;
-            await registrantsRef.child(id).remove();
-            showToast('🗑️ تم حذف المسجل', 'info');
-            playSound('click');
-        };
-
-        async function clearAllRegistrants() {
-            if (!confirm('⚠️ هل أنت متأكد من مسح جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
-            if (!confirm('تأكيد نهائي: مسح الكل؟')) return;
-            await registrantsRef.remove();
-            showToast('🗑️ تم مسح جميع المسجلين', 'info');
-            playSound('click');
-        }
-
-        // ============================================================
         //  REGISTRATION FORM
         // ============================================================
         const form = document.getElementById('registerForm');
@@ -2371,7 +2454,7 @@
                 return;
             }
 
-            // التحقق من عدم تكرار الهاتف (على البيانات الحالية من Firebase)
+            // التحقق من عدم تكرار الهاتف
             const existing = currentRegistrants.find(r => r.phone === phone);
             if (existing) {
                 showMsg('⚠️ هذا رقم الهاتف مسجل مسبقاً.', 'error');
@@ -2567,24 +2650,25 @@
         }, 1000);
 
         // ============================================================
-        //  INIT
+        //  INIT - فتح أول بطاقة بعد التحميل
         // ============================================================
-        // فتح أول بطاقة بعد انتهاء شاشة البداية
         setTimeout(() => {
             const firstCard = document.querySelector('.card');
             if (firstCard && !firstCard.classList.contains('open')) firstCard.classList.add('open');
-        }, 2200);
+        }, 2600); // بعد اختفاء شاشة التحميل بقليل
 
-        // التحقق من الوضع الليلي
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark');
             themeToggle.textContent = '☀️';
         }
 
-        console.log('🎓 يوم التوجيه الجامعي — النسخة السحابية مع Firebase');
+        console.log('🎓 يوم التوجيه الجامعي — النسخة الآمنة (Firebase + LocalStorage Fallback)');
         console.log('📅 الأيام: الثلاثاء 14, الأربعاء 15, الخميس 16 جويلية 2026');
         console.log('🔑 كود الإدارة: admin123');
-        console.log('✅ البيانات مشتركة بين جميع المتصفحات والأجهزة عبر Firebase');
+        console.log('💾 وضع العمل:', dbMode === 'firebase' ? 'سحابي (Firebase)' : 'محلي (LocalStorage)');
+        if (dbMode === 'local') {
+            console.warn('⚠️ تأكد من ضبط بيانات Firebase بشكل صحيح للعمل السحابي المشترك.');
+        }
     </script>
 </body>
 </html>
