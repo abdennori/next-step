@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>يوم التوجيه الجامعي — النسخة التفاعلية</title>
+    <!-- ===== إضافة Firebase SDK ===== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>يوم التوجيه الجامعي — النسخة التفاعلية</title>
     <style>
         /* ===== RESET & BASE ===== */
         * {
@@ -1824,147 +1833,42 @@
                                     <option value="18 - جيجل">18 - جيجل</option>
                                     <option value="19 - سطيف">19 - سطيف</option>
                                     <option value="20 - سعيدة">20 - سعيدة</option>
-                                    <option value="21 - سكيكدة">21 - سكيكدة</option>
-                                    <option value="22 - سيدي بلعباس">22 - سيدي بلعباس</option>
-                                    <option value="23 - عنابة">23 - عنابة</option>
-                                    <option value="24 - قالمة">24 - قالمة</option>
-                                    <option value="25 - قسنطينة">25 - قسنطينة</option>
-                                    <option value="26 - المدية">26 - المدية</option>
-                                    <option value="27 - مستغانم">27 - مستغانم</option>
-                                    <option value="28 - المسيلة">28 - المسيلة</option>
-                                    <option value="29 - معسكر">29 - معسكر</option>
-                                    <option value="30 - ورقلة">30 - ورقلة</option>
-                                    <option value="31 - وهران">31 - وهران</option>
-                                    <option value="32 - البيض">32 - البيض</option>
-                                    <option value="33 - إليزي">33 - إليزي</option>
-                                    <option value="34 - برج بوعريريج">34 - برج بوعريريج</option>
-                                    <option value="35 - بومرداس">35 - بومرداس</option>
-                                    <option value="36 - الطارف">36 - الطارف</option>
-                                    <option value="37 - تندوف">37 - تندوف</option>
-                                    <option value="38 - تيسمسيلت">38 - تيسمسيلت</option>
-                                    <option value="39 - الوادي">39 - الوادي</option>
-                                    <option value="40 - خنشلة">40 - خنشلة</option>
-                                    <option value="41 - سوق أهراس">41 - سوق أهراس</option>
-                                    <option value="42 - تيبازة">42 - تيبازة</option>
-                                    <option value="43 - ميلة">43 - ميلة</option>
-                                    <option value="44 - عين الدفلى">44 - عين الدفلى</option>
-                                    <option value="45 - النعامة">45 - النعامة</option>
-                                    <option value="46 - عين تيموشنت">46 - عين تيموشنت</option>
-                                    <option value="47 - غرداية">47 - غرداية</option>
-                                    <option value="48 - غليزان">48 - غليزان</option>
-                                    <option value="49 - برج باجي مختار">49 - برج باجي مختار</option>
-                                    <option value="50 - أولاد جلال">50 - أولاد جلال</option>
-                                    <option value="51 - بني عباس">51 - بني عباس</option>
-                                    <option value="52 - جانت">52 - جانت</option>
-                                    <option value="53 - عين صالح">53 - عين صالح</option>
-                                    <option value="54 - عين قزام">54 - عين قزام</option>
-                                    <option value="55 - توقورت">55 - توقورت</option>
-                                    <option value="56 - برج باجي مختار">56 - برج باجي مختار</option>
-                                    <option value="57 - المغير">57 - المغير</option>
-                                    <option value="58 - المنيعة">58 - المنيعة</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="reg-actions">
-                            <button type="submit" class="btn btn-primary" id="registerBtn">📝 تسجيل</button>
-                        </div>
-                    </form>
-                    <div id="msgBox" class="msg-box"></div>
-                    <p style="font-size:11px;color:var(--muted);margin-top:16px;text-align:center;">🔒 يتم تسجيل بياناتك بشكل آمن. رقم الهاتف يستخدم مرة واحدة فقط.</p>
-                </div>
-            </div>
-        </div>
+                      
 
-    </div>
-
-    <!-- ===== ADMIN ACCESS ===== -->
-    <div class="admin-access">
-        <div class="admin-login" id="adminLoginBox">
-            <input type="password" id="adminPasswordInput" placeholder="🔑 كود الإدارة" maxlength="20" />
-            <button class="btn btn-success" id="adminLoginBtn">دخول</button>
-            <button class="btn btn-outline" id="adminLogoutBtn" style="display:none;">تسجيل الخروج</button>
-        </div>
-        <div class="login-error" id="loginError">⚠️ كود غير صحيح، حاول مرة أخرى.</div>
-    </div>
-
-    <!-- ===== ADMIN PANEL ===== -->
-    <div id="adminPanel" style="display:none;">
-        <h3>📋 قائمة المسجلين</h3>
-        <div class="admin-actions">
-            <input type="text" id="adminSearch" placeholder="🔍 بحث بالاسم أو الهاتف..." />
-            <button id="exportCsvBtn" class="btn btn-success" style="padding:8px 18px;font-size:13px;">📥 تصدير CSV</button>
-            <button id="clearAllBtn" class="btn btn-danger" style="padding:8px 18px;font-size:13px;">🗑️ مسح الكل</button>
-            <span style="align-self:center;font-size:14px;color:var(--muted);">👥 <strong id="adminCount">0</strong> مسجّل</span>
-            <button class="logout-btn" id="adminLogoutBtn2">🚪 خروج</button>
-        </div>
-        <div style="overflow-x:auto;">
-            <table>
-                <thead>
-                    <tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>البريد</th><th>الثانوية</th><th>الشعبة</th><th>الولاية</th><th style="text-align:center;">حذف</th></tr>
-                </thead>
-                <tbody id="adminTableBody">
-                    <tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted);">لا يوجد مسجلون</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center;">🔒 البيانات محفوظة محلياً في متصفحك (localStorage).</p>
-    </div>
-
-    <!-- ===== CERTIFICATE MODAL ===== -->
-    <div class="cert-modal" id="certModal">
-        <div class="cert-content" id="certContent">
-            <span class="cert-seal">🎓</span>
-            <h2>شهادة مشاركة</h2>
-            <div class="cert-sub">— يوم التوجيه الجامعي —</div>
-            <div class="cert-divider"></div>
-            <div class="cert-name" id="certName">أحمد بن سالم</div>
-            <div class="cert-detail">
-                <p>تشهد هذه الشهادة أن<br /><strong id="certFullName">الاسم</strong><br />قد سجل في <strong>يوم التوجيه الجامعي</strong><br />وقد حصل على شهادة تقديرية لتفاعله ومشاركته الفاعلة.</p>
-            </div>
-            <div class="cert-id" id="certId"># CERT-0000</div>
-            <div class="cert-footer">
-                <span class="cert-date" id="certDate">2026-07-08</span>
-                <span style="font-size:12px;color:var(--gold);">✦ المغير ✦</span>
-            </div>
-            <div class="cert-actions no-print">
-                <button class="btn btn-gold" id="downloadCertBtn">📥 تحميل الشهادة</button>
-                <button class="btn btn-primary" id="printCertBtn">🖨️ طباعة</button>
-                <button class="btn btn-outline" onclick="closeCert()">✕ إغلاق</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== FOOTER ===== -->
-    <footer>
-        <strong>المنظمة الوطنية للشباب من أجل الجزائر — المكتب التنفيذي الولائي المغير</strong><br />
-        <span style="margin-top:4px;display:block">معًا نختار بذكاء ✦ Ensemble, choisissons avec intelligence</span>
-    </footer>
-
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js">
-    </script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         // ============================================================
-        //  CONFIG
+        //  FIREBASE CONFIG — ⬅️ الصق بيانات مشروعك هنا
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBjMoi2os-C0DxcumjwKSmhAYboYWfGt64",
+            authDomain: "guidance-day.firebaseapp.com",
+            databaseURL: "https://guidance-day-default-rtdb.firebaseio.com",
+            projectId: "guidance-day",
+            storageBucket: guidance-day.firebasestorage.app",
+            messagingSenderId: "190184922202",
+            appId: "1:190184922202:web:175fd4be9c69a117e78c63"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const registrantsRef = database.ref('registrants');
+
+        // ============================================================
+        //  إعدادات الحدث (كما هي)
         // ============================================================
         const EVENT_DATES = {
-            day1: new Date(2026, 6, 14), // Tue 14 July 2026
-            day2: new Date(2026, 6, 15), // Wed 15 July 2026
-            day3: new Date(2026, 6, 16), // Thu 16 July 2026
+            day1: new Date(2026, 6, 14),
+            day2: new Date(2026, 6, 15),
+            day3: new Date(2026, 6, 16),
         };
         const EVENT_START = EVENT_DATES.day1;
-
         const DAY_NAMES = ['الثلاثاء', 'الأربعاء', 'الخميس'];
         const MONTH_NAMES = ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
 
-        function formatDate(d) {
-            return d.getDate() + ' ' + MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear();
-        }
+        function formatDate(d) { return d.getDate() + ' ' + MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear(); }
 
-        function formatDateShort(d) {
-            return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-        }
+        function formatDateShort(d) { return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear(); }
 
-        // Set dates in UI
         document.getElementById('day1Date').textContent = formatDate(EVENT_DATES.day1);
         document.getElementById('day2Date').textContent = formatDate(EVENT_DATES.day2);
         document.getElementById('day3Date').textContent = formatDate(EVENT_DATES.day3);
@@ -1973,261 +1877,84 @@
         document.getElementById('progDay3').textContent = '— ' + formatDateShort(EVENT_DATES.day3);
 
         // ============================================================
-        //  SPLASH
+        //  SPLASH, THEME, SOUND, CARD TOGGLE ... (كل الدوال كما هي)
+        //  سأحتفظ بها كلها كما هي، لكن سأستبدل دوال التسجيل والإدارة فقط.
         // ============================================================
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('splash').classList.add('hide');
-                setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 800);
-            }, 2000);
+
+        // ... (ضع هنا كل الكود الأصلي باستثناء دوال getRegistrants, saveRegistrants, updateCounters, registerForm, admin table)
+
+        // ============================================================
+        //  دوال Firebase الجديدة
+        // ============================================================
+        let currentRegistrants = [];
+
+        // تحميل البيانات من Firebase وعرضها
+        registrantsRef.on('value', snapshot => {
+            const data = snapshot.val();
+            currentRegistrants = data ? Object.values(data) : [];
+            updateAllUI(currentRegistrants);
         });
 
-        // ============================================================
-        //  THEME
-        // ============================================================
-        const themeToggle = document.getElementById('themeToggle');
-        let darkMode = localStorage.getItem('darkMode') === 'true';
-        if (darkMode) { document.body.classList.add('dark');
-            themeToggle.textContent = '☀️'; }
-        themeToggle.addEventListener('click', () => {
-            darkMode = !darkMode;
-            document.body.classList.toggle('dark', darkMode);
-            localStorage.setItem('darkMode', darkMode);
-            themeToggle.textContent = darkMode ? '☀️' : '🌙';
-            playSound('click');
-        });
+        function updateAllUI(list) {
+            // تحديث العداد
+            const count = list.length;
+            document.getElementById('participantCount').textContent = count;
+            document.getElementById('participantCount').classList.remove('pop');
+            void document.getElementById('participantCount').offsetWidth;
+            document.getElementById('participantCount').classList.add('pop');
+            document.getElementById('adminCount').textContent = count;
 
-        // ============================================================
-        //  SOUND SYSTEM — improved
-        // ============================================================
-        let soundEnabled = true;
-        const soundToggle = document.getElementById('soundToggle');
-        let audioCtx = null;
-
-        function initAudio() {
-            if (!audioCtx) {
-                try { audioCtx = new(window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
-            }
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            // تحديث جدول الإدارة (إذا كان المدير مسجل الدخول)
+            if (isAdminLoggedIn()) renderAdminTable(list);
         }
 
-        function playSound(type = 'click') {
-            if (!soundEnabled) return;
-            initAudio();
-            if (!audioCtx) return;
-            try {
-                const now = audioCtx.currentTime;
-
-                if (type === 'click') {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.frequency.value = 880;
-                    osc.type = 'sine';
-                    gain.gain.setValueAtTime(0.08, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-                    osc.start(now);
-                    osc.stop(now + 0.06);
-                } else if (type === 'success') {
-                    // Ascending pleasant chime
-                    const notes = [523, 659, 784, 1047];
-                    notes.forEach((freq, i) => {
-                        const osc = audioCtx.createOscillator();
-                        const gain = audioCtx.createGain();
-                        osc.connect(gain);
-                        gain.connect(audioCtx.destination);
-                        osc.frequency.value = freq;
-                        osc.type = 'sine';
-                        const t = now + i * 0.08;
-                        gain.gain.setValueAtTime(0.07, t);
-                        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-                        osc.start(t);
-                        osc.stop(t + 0.12);
-                    });
-                } else if (type === 'error') {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.frequency.value = 280;
-                    osc.type = 'sawtooth';
-                    gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-                    osc.start(now);
-                    osc.stop(now + 0.3);
-                } else if (type === 'certificate') {
-                    // Gentle fanfare
-                    const notes = [523, 659, 784, 880, 1047];
-                    notes.forEach((freq, i) => {
-                        const osc = audioCtx.createOscillator();
-                        const gain = audioCtx.createGain();
-                        osc.connect(gain);
-                        gain.connect(audioCtx.destination);
-                        osc.frequency.value = freq;
-                        osc.type = 'sine';
-                        const t = now + i * 0.06;
-                        gain.gain.setValueAtTime(0.06, t);
-                        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
-                        osc.start(t);
-                        osc.stop(t + 0.15);
-                    });
-                } else if (type === 'countdown') {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.frequency.value = 660;
-                    osc.type = 'sine';
-                    gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-                    osc.start(now);
-                    osc.stop(now + 0.04);
-                }
-            } catch (e) { /* ignore */ }
-        }
-
-        soundToggle.addEventListener('click', () => {
-            soundEnabled = !soundEnabled;
-            soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
-            if (soundEnabled) playSound('click');
-        });
-
-        // Attach sound to clicks — with smarter filtering
-        document.addEventListener('click', (e) => {
-            const target = e.target.closest(
-                '.card-header, .corner-card, .progress-step, .btn, .link-item, .contact-number, .theme-toggle, .sound-toggle, .btn-close-cert, #adminLoginBtn, #adminLogoutBtn, #adminLogoutBtn2, #downloadCertBtn, #printCertBtn'
-                );
-            if (target) {
-                if (target.closest('#registerBtn')) return;
-                if (target.id === 'adminLoginBtn' || target.id === 'adminLogoutBtn' || target.id === 'adminLogoutBtn2') return;
-                if (target.id === 'downloadCertBtn' || target.id === 'printCertBtn') return;
-                playSound('click');
-            }
-        });
-
-        // ============================================================
-        //  CARD TOGGLE
-        // ============================================================
-        function toggleCard(headerEl) {
-            const card = headerEl.closest('.card');
-            if (!card) return;
-            const wasOpen = card.classList.contains('open');
-            document.querySelectorAll('.card.open').forEach(c => { if (c !== card) c.classList.remove('open'); });
-            if (wasOpen) card.classList.remove('open');
-            else card.classList.add('open');
-            playSound('click');
-        }
-
-        // ============================================================
-        //  SCROLL REVEAL
-        // ============================================================
-        const revealEls = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
-        revealEls.forEach(el => revealObserver.observe(el));
-
-        // ============================================================
-        //  3D TILT
-        // ============================================================
-        document.querySelectorAll('.tilt').forEach(el => {
-            el.addEventListener('mousemove', function(e) {
-                const rect = this.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                this.style.transform = `perspective(800px) rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
+        // إضافة مسجل جديد
+        async function addRegistrant(data) {
+            const newRef = registrantsRef.push();
+            const certId = generateCertId();
+            await newRef.set({
+                id: newRef.key,
+                fullName: data.fullName,
+                phone: data.phone,
+                email: data.email,
+                highSchool: data.highSchool,
+                branch: data.branch,
+                wilaya: data.wilaya,
+                registeredAt: new Date().toLocaleString('ar-DZ'),
+                certificate: true,
+                certId: certId
             });
-            el.addEventListener('mouseleave', function() {
-                this.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)';
-                this.style.transition = 'transform 0.3s ease';
-                setTimeout(() => { this.style.transition = ''; }, 300);
-            });
-        });
+            return certId;
+        }
 
-        // ============================================================
-        //  PROGRESS
-        // ============================================================
-        const steps = document.querySelectorAll('.progress-step');
-        const fill = document.getElementById('progressFill');
-        steps.forEach((step, i) => {
-            step.addEventListener('click', () => {
-                steps.forEach((s, idx) => {
-                    s.classList.toggle('active', idx === i);
-                    s.classList.toggle('done', idx < i);
-                });
-                fill.style.width = (i / (steps.length - 1)) * 100 + '%';
-                const cards = document.querySelectorAll('.card');
-                if (cards[i]) { cards[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    cards[i].classList.add('open'); }
-                playSound('click');
-            });
-        });
+        // حذف مسجل
+        async function deleteRegistrant(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا المسجل؟')) return;
+            await registrantsRef.child(id).remove();
+            showToast('🗑️ تم حذف المسجل', 'info');
+        }
 
-        // ============================================================
-        //  CORNER DETAIL
-        // ============================================================
-        function showCornerDetail(title, emoji, desc) {
-            const box = document.getElementById('cornerDetailBox');
-            if (!box) return;
-            document.getElementById('cornerDetailEmoji').textContent = emoji;
-            document.getElementById('cornerDetailTitle').textContent = title;
-            document.getElementById('cornerDetailDesc').textContent = desc;
-            box.style.display = 'block';
-            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            box.style.transition = 'background 0.3s';
-            box.style.background = '#e0f2f1';
-            setTimeout(() => { box.style.background = ''; }, 400);
-            playSound('click');
+        // مسح الكل
+        async function clearAllRegistrants() {
+            if (!confirm('⚠️ هل أنت متأكد من مسح جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
+            if (!confirm('تأكيد نهائي: مسح الكل؟')) return;
+            await registrantsRef.remove();
+            showToast('🗑️ تم مسح جميع المسجلين', 'info');
+        }
+
+        // توليد رقم شهادة
+        function generateCertId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = 'CERT-';
+            for (let i = 0; i < 6; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+            return result;
         }
 
         // ============================================================
-        //  TOAST SYSTEM
-        // ============================================================
-        function showToast(message, type = 'info', duration = 3500) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
-            toast.innerHTML = `<span>${icons[type] || 'ℹ️'}</span> ${message}`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.add('hide');
-                setTimeout(() => toast.remove(), 300);
-            }, duration);
-            if (type === 'success') playSound('success');
-            else if (type === 'error') playSound('error');
-            else playSound('click');
-        }
-
-        // ============================================================
-        //  REGISTRATION + CERTIFICATE
+        //  تعديل نموذج التسجيل
         // ============================================================
         const form = document.getElementById('registerForm');
         const msgBox = document.getElementById('msgBox');
-        const participantCountEl = document.getElementById('participantCount');
-
-        function getRegistrants() {
-            try { return JSON.parse(localStorage.getItem('registrants')) || []; } catch { return []; }
-        }
-
-        function saveRegistrants(list) {
-            localStorage.setItem('registrants', JSON.stringify(list));
-            updateCounters();
-            if (isAdminLoggedIn()) renderAdminTable();
-        }
-
-        function updateCounters() {
-            const list = getRegistrants();
-            const count = list.length;
-            participantCountEl.textContent = count;
-            participantCountEl.classList.remove('pop');
-            void participantCountEl.offsetWidth;
-            participantCountEl.classList.add('pop');
-            document.getElementById('adminCount').textContent = count;
-        }
 
         function showMsg(text, type) {
             msgBox.textContent = text;
@@ -2238,90 +1965,7 @@
         function clearMsg() { msgBox.style.display = 'none';
             msgBox.className = 'msg-box'; }
 
-        function fireConfetti() {
-            const container = document.createElement('div');
-            container.className = 'confetti-container';
-            document.body.appendChild(container);
-            const colors = ['#f44336', '#e91e63', '#9c27b0', '#3f51b5', '#4caf50', '#ffeb3b', '#ff9800', '#00bcd4', '#c9a84c',
-                '#f5d97a'
-            ];
-            for (let i = 0; i < 80; i++) {
-                const piece = document.createElement('div');
-                piece.className = 'confetti-piece';
-                piece.style.left = Math.random() * 100 + '%';
-                piece.style.top = '-10px';
-                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-                piece.style.width = (Math.random() * 8 + 4) + 'px';
-                piece.style.height = (Math.random() * 8 + 4) + 'px';
-                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-                piece.style.animationDuration = (Math.random() * 1.2 + 0.8) + 's';
-                piece.style.animationDelay = (Math.random() * 0.6) + 's';
-                container.appendChild(piece);
-            }
-            setTimeout(() => container.remove(), 2500);
-        }
-
-        function generateCertId() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let result = 'CERT-';
-            for (let i = 0; i < 6; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-        }
-
-        function showCertificate(name, certId) {
-            document.getElementById('certName').textContent = name;
-            document.getElementById('certFullName').textContent = name;
-            document.getElementById('certId').textContent = certId || generateCertId();
-            document.getElementById('certDate').textContent = formatDate(new Date());
-            document.getElementById('certModal').classList.add('show');
-            playSound('certificate');
-        }
-
-        window.closeCert = function() {
-            document.getElementById('certModal').classList.remove('show');
-        };
-
-        // Download certificate as image using html2canvas
-        document.getElementById('downloadCertBtn').addEventListener('click', function() {
-            const certContent = document.getElementById('certContent');
-            html2canvas(certContent, {
-                scale: 2,
-                backgroundColor: '#ffffff',
-                allowTaint: true,
-                useCORS: true,
-                logging: false,
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'شهادة_مشاركة_' + document.getElementById('certName').textContent + '.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                showToast('✅ تم تحميل الشهادة بنجاح!', 'success');
-            }).catch(() => {
-                showToast('⚠️ حدث خطأ أثناء تحميل الشهادة، حاول استخدام الطباعة.', 'error');
-            });
-        });
-
-        // Print certificate
-        document.getElementById('printCertBtn').addEventListener('click', function() {
-            window.print();
-        });
-
-        // Close cert on escape
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeCert();
-                document.querySelectorAll('.card.open').forEach(c => c.classList.remove('open'));
-            }
-        });
-
-        // Close cert on click outside
-        document.getElementById('certModal').addEventListener('click', function(e) {
-            if (e.target === this) closeCert();
-        });
-
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
             clearMsg();
             const fullName = document.getElementById('fullName').value.trim();
@@ -2335,38 +1979,31 @@
                 showToast('⚠️ الرجاء ملء جميع الحقول المطلوبة', 'error');
                 return;
             }
-            const registrants = getRegistrants();
-            if (registrants.some(r => r.phone === phone)) {
+            // التحقق من عدم تكرار الهاتف (على Firebase)
+            const existing = currentRegistrants.find(r => r.phone === phone);
+            if (existing) {
                 showMsg('⚠️ هذا رقم الهاتف مسجل مسبقاً.', 'error');
                 showToast('⚠️ رقم الهاتف مسجل مسبقاً', 'error');
                 return;
             }
-            const certId = generateCertId();
-            const newEntry = {
-                id: Date.now(),
-                fullName,
-                phone,
-                email,
-                highSchool,
-                branch,
-                wilaya,
-                registeredAt: new Date().toLocaleString('ar-DZ'),
-                certificate: true,
-                certId: certId
-            };
-            registrants.push(newEntry);
-            saveRegistrants(registrants);
-            showMsg('✅ تم تسجيلك بنجاح! 🎉', 'success');
-            showToast('🎉 تم تسجيلك بنجاح! شهادتك جاهزة.', 'success');
-            form.reset();
-            fireConfetti();
-            setTimeout(() => {
-                showCertificate(fullName, certId);
-            }, 1200);
+            try {
+                const certId = await addRegistrant({ fullName, phone, email, highSchool, branch, wilaya });
+                showMsg('✅ تم تسجيلك بنجاح! 🎉', 'success');
+                showToast('🎉 تم تسجيلك بنجاح! شهادتك جاهزة.', 'success');
+                form.reset();
+                fireConfetti();
+                setTimeout(() => {
+                    showCertificate(fullName, certId);
+                }, 1200);
+            } catch (error) {
+                showMsg('⚠️ حدث خطأ أثناء التسجيل، حاول مرة أخرى.', 'error');
+                showToast('⚠️ خطأ في الاتصال بقاعدة البيانات', 'error');
+                console.error(error);
+            }
         });
 
         // ============================================================
-        //  ADMIN LOGIN / LOGOUT
+        //  تعديل لوحة الإدارة
         // ============================================================
         const ADMIN_CODE = 'admin123';
         let adminLoggedIn = false;
@@ -2391,7 +2028,7 @@
                 adminLogoutBtn.style.display = 'inline-flex';
                 adminPasswordInput.style.display = 'none';
                 adminPasswordInput.value = '';
-                renderAdminTable();
+                renderAdminTable(currentRegistrants);
                 showToast('🔐 مرحباً بك في لوحة الإدارة', 'success');
                 playSound('success');
             } else {
@@ -2418,16 +2055,12 @@
         adminLogoutBtn.addEventListener('click', adminLogout);
         adminLogoutBtn2.addEventListener('click', adminLogout);
 
-        // ============================================================
-        //  ADMIN TABLE RENDER
-        // ============================================================
+        // عرض الجدول
         const adminSearch = document.getElementById('adminSearch');
         const adminTableBody = document.getElementById('adminTableBody');
-        const exportCsvBtn = document.getElementById('exportCsvBtn');
-        const clearAllBtn = document.getElementById('clearAllBtn');
 
-        function renderAdminTable(filter = '') {
-            const list = getRegistrants();
+        function renderAdminTable(list) {
+            const filter = adminSearch.value;
             const filtered = list.filter(r => r.fullName.includes(filter) || r.phone.includes(filter));
             if (filtered.length === 0) {
                 adminTableBody.innerHTML =
@@ -2445,35 +2078,23 @@
               <td>${r.branch}</td>
               <td>${r.wilaya || '—'}</td>
               <td style="text-align:center;">
-                <button onclick="deleteRegistrant(${r.id})" style="background:var(--red);color:#fff;border:none;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;">✕</button>
+                <button onclick="deleteRegistrant('${r.id}')" style="background:var(--red);color:#fff;border:none;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;">✕</button>
               </td>
             </tr>`;
             });
             adminTableBody.innerHTML = html;
-            document.getElementById('adminCount').textContent = list.length;
         }
 
-        window.deleteRegistrant = function(id) {
-            if (!confirm('هل أنت متأكد من حذف هذا المسجل؟')) return;
-            let list = getRegistrants();
-            list = list.filter(r => r.id !== id);
-            saveRegistrants(list);
-            if (isAdminLoggedIn()) renderAdminTable(adminSearch.value);
-            updateCounters();
-            showToast('🗑️ تم حذف المسجل', 'info');
-            playSound('click');
-        };
-
         adminSearch.addEventListener('input', function() {
-            if (isAdminLoggedIn()) renderAdminTable(this.value);
+            if (isAdminLoggedIn()) renderAdminTable(currentRegistrants);
         });
 
-        exportCsvBtn.addEventListener('click', function() {
-            const list = getRegistrants();
-            if (list.length === 0) { showToast('⚠️ لا يوجد مسجلون لتصديرهم', 'error'); return; }
+        // أزرار الإدارة
+        document.getElementById('exportCsvBtn').addEventListener('click', function() {
+            if (currentRegistrants.length === 0) { showToast('⚠️ لا يوجد مسجلون لتصديرهم', 'error'); return; }
             const headers = ['الاسم', 'الهاتف', 'البريد', 'الثانوية', 'الشعبة', 'الولاية', 'تاريخ التسجيل', 'رقم الشهادة'];
-            const rows = list.map(r => [r.fullName, r.phone, r.email || '', r.highSchool, r.branch, r.wilaya || '', r
-                .registeredAt || '', r.certId || ''
+            const rows = currentRegistrants.map(r => [r.fullName, r.phone, r.email || '', r.highSchool, r.branch, r.wilaya ||
+                '', r.registeredAt || '', r.certId || ''
             ]);
             let csv = '\uFEFF' + headers.join(',') + '\n';
             rows.forEach(row => { csv += row.map(c => `"${c}"`).join(',') + '\n'; });
@@ -2487,104 +2108,44 @@
             playSound('click');
         });
 
-        clearAllBtn.addEventListener('click', function() {
-            if (!confirm('⚠️ هل أنت متأكد من مسح جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
-            if (!confirm('تأكيد نهائي: مسح الكل؟')) return;
-            saveRegistrants([]);
-            if (isAdminLoggedIn()) renderAdminTable('');
-            updateCounters();
-            showToast('🗑️ تم مسح جميع المسجلين', 'info');
-            playSound('click');
-        });
+        document.getElementById('clearAllBtn').addEventListener('click', clearAllRegistrants);
 
         // ============================================================
-        //  COUNTDOWN TIMER
+        //  باقي الدوال (TOAST, CONFETTI, CERTIFICATE, COUNTDOWN, ...)
+        //  تبقى كما هي تماماً، لا حاجة لتغييرها.
         // ============================================================
-        function updateCountdown() {
-            const now = new Date();
-            const target = new Date(EVENT_START);
-            const diff = target - now;
-
-            const cdDays = document.getElementById('cdDays');
-            const cdHours = document.getElementById('cdHours');
-            const cdMinutes = document.getElementById('cdMinutes');
-            const cdSeconds = document.getElementById('cdSeconds');
-            const cdLabel = document.getElementById('countdownLabel');
-
-            if (diff <= 0) {
-                cdDays.textContent = '00';
-                cdHours.textContent = '00';
-                cdMinutes.textContent = '00';
-                cdSeconds.textContent = '00';
-                cdLabel.textContent = '🎉 انطلق!';
-                document.getElementById('countdownBar').style.borderColor = 'var(--gold)';
-                return;
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            cdDays.textContent = String(days).padStart(2, '0');
-            cdHours.textContent = String(hours).padStart(2, '0');
-            cdMinutes.textContent = String(minutes).padStart(2, '0');
-            cdSeconds.textContent = String(seconds).padStart(2, '0');
-            cdLabel.textContent = days === 1 ? 'يوم' : days > 1 ? 'أيام' : '';
-
-            // Flash effect on seconds change
-            if (seconds % 5 === 0) {
-                cdSeconds.style.transition = 'transform 0.1s';
-                cdSeconds.style.transform = 'scale(1.15)';
-                setTimeout(() => { cdSeconds.style.transform = 'scale(1)'; }, 150);
-            }
-        }
-
-        // Check if today is one of the event days and highlight the pill
-        function highlightToday() {
-            const now = new Date();
-            const todayStr = now.toDateString();
-            const pills = [
-                { el: document.getElementById('day1Pill'), date: EVENT_DATES.day1 },
-                { el: document.getElementById('day2Pill'), date: EVENT_DATES.day2 },
-                { el: document.getElementById('day3Pill'), date: EVENT_DATES.day3 },
-            ];
-            pills.forEach(p => {
-                if (p.date.toDateString() === todayStr) {
-                    p.el.classList.add('active-day');
-                } else {
-                    p.el.classList.remove('active-day');
-                }
-            });
-        }
-
-        updateCountdown();
-        highlightToday();
-        setInterval(() => {
-            updateCountdown();
-            highlightToday();
-        }, 1000);
+        // ... (انسخ هنا كل دوال toast, confetti, certificate, countdown, 
+        //     theme, sound, progress, corner detail, scroll reveal, etc.)
+        //     تأكد من أن جميع الدوال المذكورة موجودة، 
+        //     لكن لا تنسخ دوال getRegistrants و saveRegistrants القديمة.
 
         // ============================================================
-        //  INIT
+        //  أخيراً: تهيئة العرض عند تحميل الصفحة
         // ============================================================
-        updateCounters();
-
-        // Open first card after splash
+        // لأن المستمع registrantsRef.on('value', ...) سيقوم بتحديث كل شيء تلقائياً،
+        // لا نحتاج لاستدعاء updateAllUI يدوياً.
+        // ولكن نفتح أول بطاقة بعد الشاشة التمهيدية:
         setTimeout(() => {
             const firstCard = document.querySelector('.card');
             if (firstCard && !firstCard.classList.contains('open')) firstCard.classList.add('open');
         }, 2200);
 
-        // Re-apply dark mode from localStorage after DOM load
+        // تفعيل الوضع الليلي إذا كان محفوظاً
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark');
-            themeToggle.textContent = '☀️';
+            document.getElementById('themeToggle').textContent = '☀️';
         }
 
-        console.log('🎓 يوم التوجيه الجامعي — النسخة التفاعلية المطورة');
+        // تحديث العداد المؤقت كل ثانية
+        setInterval(() => {
+            updateCountdown();
+            highlightToday();
+        }, 1000);
+
+        console.log('🎓 يوم التوجيه الجامعي — النسخة السحابية مع Firebase');
         console.log('📅 الأيام: الثلاثاء 14, الأربعاء 15, الخميس 16 جويلية 2026');
         console.log('🔑 كود الإدارة: admin123');
+        console.log('✅ البيانات مشتركة بين جميع المتصفحات عبر Firebase');
     </script>
 </body>
 </html>
