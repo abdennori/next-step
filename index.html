@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>يوم التوجيه الجامعي — نسخة Google Sheets</title>
+    <title>يوم التوجيه الجامعي — النسخة المتطورة</title>
+
+    <!-- ===== FIREBASE SDK ===== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <style>
-        /* ===== RESET & BASE ===== */
+        /* ===== جميع أنماط CSS كما هي (لم تتغير) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -1857,7 +1861,7 @@
                     </form>
                     <div id="msgBox" class="msg-box"></div>
                     <p style="font-size:11px;color:var(--muted);margin-top:16px;text-align:center;">
-                        🔒 البيانات تُحفظ في Google Sheets وتظهر للجميع فوراً.
+                        🔒 البيانات تُحفظ في السحاب (Firebase) — وفي حال تعذر الاتصال، تُحفظ محلياً كنسخة احتياطية.
                     </p>
                 </div>
             </div>
@@ -1895,7 +1899,7 @@
                 </tbody>
             </table>
         </div>
-        <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center;">🔒 البيانات محفوظة في Google Sheets وتظهر للجميع.</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center;">🔒 البيانات محفوظة في السحاب (Firebase) وتظهر للجميع.</p>
     </div>
 
     <!-- ===== CERTIFICATE MODAL ===== -->
@@ -1932,12 +1936,21 @@
     </script>
     <script>
         // ============================================================
-        //  ⚠️ رابط تطبيق Google Apps Script (ضع الرابط الذي نسخته)
+        //  ⚠️ IMPORTANT: ضع بيانات مشروعك من Firebase Console هنا
+        //  إذا تركتها كما هي، سيعمل الموقع باستخدام التخزين المحلي فقط.
         // ============================================================
-        const SCRIPT_URL = "https://script.google.com/macros/library/d/1QaSaB07QqEUYIp_lVcCvLgWFA0QT81OXBLnr572ZZ3Hm8sxbnciq7XU8/3"; // ⬅️ استبدل هذا الرابط
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2PwB4hChtdbB6kka3ON8ROMBYm-X3C_k",
+            authDomain: "vcf-x-3bbb0.firebaseapp.com",
+            databaseURL: "https://vcf-x-3bbb0-default-rtdb.firebaseio.com",
+            projectId: "vcf-x-3bbb0",
+            storageBucket: "vcf-x-3bbb0.firebasestorage.app",
+            messagingSenderId: "33485187197",
+            appId: "1:33485187197:web:1a51b010f6c0d5ddc8e914"
+        };
 
         // ============================================================
-        //  إخفاء شاشة التحميل بشكل قسري (لضمان عدم التجمّد)
+        //  FORCE HIDE SPLASH — مضمون 100% حتى لو حدث خطأ
         // ============================================================
         setTimeout(() => {
             const splash = document.getElementById('splash');
@@ -1945,7 +1958,157 @@
                 splash.classList.add('hide');
                 setTimeout(() => { splash.style.display = 'none'; }, 800);
             }
-        }, 2500);
+        }, 2500); // 2.5 ثانية كافية جداً
+
+        // ============================================================
+        //  FIREBASE WITH FALLBACK (LocalStorage)
+        // ============================================================
+        let dbMode = 'initializing';
+        let currentRegistrants = [];
+        let registrantsRef = null;
+
+        // دوال التخزين المحلي (الاحتياطي)
+        function getLocalRegistrants() {
+            try { return JSON.parse(localStorage.getItem('registrants_fallback')) || []; } catch { return []; }
+        }
+
+        function saveLocalRegistrants(list) {
+            localStorage.setItem('registrants_fallback', JSON.stringify(list));
+            currentRegistrants = list;
+            updateAllUI(list);
+        }
+
+        // محاولة تهيئة Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const database = firebase.database();
+            registrantsRef = database.ref('registrants');
+
+            // الاستماع للتغييرات في Firebase
+            registrantsRef.on('value', snapshot => {
+                const data = snapshot.val();
+                const list = data ? Object.values(data) : [];
+                currentRegistrants = list;
+                // حفظ نسخة احتياطية في localStorage
+                localStorage.setItem('registrants_fallback', JSON.stringify(list));
+                updateAllUI(list);
+                if (dbMode !== 'firebase') {
+                    dbMode = 'firebase';
+                    console.log('✅ Firebase connected successfully.');
+                    showToast('✅ متصل بقاعدة البيانات السحابية', 'success');
+                }
+            }, error => {
+                console.warn('⚠️ Firebase connection lost, switching to local backup.', error);
+                dbMode = 'local';
+                loadLocalFallback();
+                showToast('⚠️ تم التبديل إلى التخزين المحلي', 'error');
+            });
+
+            dbMode = 'firebase';
+        } catch (e) {
+            console.error('❌ Firebase initialization failed:', e);
+            dbMode = 'local';
+            loadLocalFallback();
+            showToast('⚠️ تعذر الاتصال بالسحاب، استخدام التخزين المحلي', 'error');
+        }
+
+        function loadLocalFallback() {
+            const list = getLocalRegistrants();
+            currentRegistrants = list;
+            updateAllUI(list);
+        }
+
+        // ============================================================
+        //  دوال الإضافة والحذف (تعمل مع Firebase و LocalStorage)
+        // ============================================================
+        async function addRegistrant(data) {
+            const certId = generateCertId();
+            const entry = {
+                id: Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                fullName: data.fullName,
+                phone: data.phone,
+                email: data.email || '',
+                highSchool: data.highSchool,
+                branch: data.branch,
+                wilaya: data.wilaya,
+                registeredAt: new Date().toLocaleString('ar-DZ'),
+                certificate: true,
+                certId: certId
+            };
+
+            if (dbMode === 'firebase' && registrantsRef) {
+                try {
+                    const newRef = registrantsRef.push();
+                    await newRef.set({ ...entry, id: newRef.key });
+                    return certId;
+                } catch (e) {
+                    console.warn('Firebase write failed, saving locally.', e);
+                    // فشل الكتابة في Firebase، نكتب محلياً
+                    const list = getLocalRegistrants();
+                    list.push(entry);
+                    saveLocalRegistrants(list);
+                    return certId;
+                }
+            } else {
+                // الوضع المحلي
+                const list = getLocalRegistrants();
+                list.push(entry);
+                saveLocalRegistrants(list);
+                return certId;
+            }
+        }
+
+        window.deleteRegistrant = async function(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا المسجل؟')) return;
+            if (dbMode === 'firebase' && registrantsRef) {
+                try {
+                    await registrantsRef.child(id).remove();
+                    showToast('🗑️ تم حذف المسجل', 'info');
+                    return;
+                } catch (e) {
+                    console.warn('Firebase delete failed, deleting locally.', e);
+                }
+            }
+            // حذف محلي
+            let list = getLocalRegistrants();
+            list = list.filter(r => r.id !== id);
+            saveLocalRegistrants(list);
+            showToast('🗑️ تم حذف المسجل (محلياً)', 'info');
+        };
+
+        async function clearAllRegistrants() {
+            if (!confirm('⚠️ هل أنت متأكد من مسح جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
+            if (!confirm('تأكيد نهائي: مسح الكل؟')) return;
+            if (dbMode === 'firebase' && registrantsRef) {
+                try {
+                    await registrantsRef.remove();
+                    showToast('🗑️ تم مسح جميع المسجلين', 'info');
+                    return;
+                } catch (e) {
+                    console.warn('Firebase clear failed, clearing locally.', e);
+                }
+            }
+            saveLocalRegistrants([]);
+            showToast('🗑️ تم مسح جميع المسجلين (محلياً)', 'info');
+        }
+
+        // ============================================================
+        //  UPDATE UI
+        // ============================================================
+        function updateAllUI(list) {
+            const count = list.length;
+            const counterEl = document.getElementById('participantCount');
+            counterEl.textContent = count;
+            counterEl.classList.remove('pop');
+            void counterEl.offsetWidth;
+            counterEl.classList.add('pop');
+
+            document.getElementById('adminCount').textContent = count;
+
+            if (isAdminLoggedIn()) {
+                renderAdminTable(list);
+            }
+        }
 
         // ============================================================
         //  إعدادات التاريخ
@@ -1970,173 +2133,7 @@
         document.getElementById('progDay3').textContent = '— ' + formatDateShort(EVENT_DATES.day3);
 
         // ============================================================
-        //  دوال الاتصال بـ Google Sheets
-        // ============================================================
-        let currentRegistrants = [];
-
-        // جلب البيانات من Google Sheets
-        async function fetchRegistrants() {
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=get`);
-                const result = await response.json();
-                if (result.status === 'success') {
-                    currentRegistrants = result.data;
-                    // حفظ نسخة احتياطية في localStorage
-                    localStorage.setItem('registrants_backup', JSON.stringify(currentRegistrants));
-                    updateAllUI(currentRegistrants);
-                    return true;
-                } else {
-                    console.warn('Error from server:', result.message);
-                    loadLocalBackup();
-                    return false;
-                }
-            } catch (error) {
-                console.error('Failed to fetch from Google Sheets:', error);
-                loadLocalBackup();
-                return false;
-            }
-        }
-
-        // تحميل النسخة الاحتياطية المحلية
-        function loadLocalBackup() {
-            try {
-                const backup = JSON.parse(localStorage.getItem('registrants_backup'));
-                if (backup && backup.length > 0) {
-                    currentRegistrants = backup;
-                    updateAllUI(currentRegistrants);
-                    showToast('⚠️ استخدمنا البيانات المحلية (تعذر الاتصال بالسحاب)', 'error');
-                }
-            } catch (e) { /* ignore */ }
-        }
-
-        // إضافة مسجل جديد
-        async function addRegistrant(data) {
-            const certId = generateCertId();
-            const id = Date.now() + '_' + Math.random().toString(36).substr(2, 4);
-            const params = new URLSearchParams({
-                action: 'add',
-                id: id,
-                fullName: data.fullName,
-                phone: data.phone,
-                email: data.email || '',
-                highSchool: data.highSchool,
-                branch: data.branch,
-                wilaya: data.wilaya,
-                certId: certId
-            });
-
-            try {
-                const response = await fetch(`${SCRIPT_URL}?${params.toString()}`);
-                const result = await response.json();
-                if (result.status === 'success') {
-                    // تحديث القائمة المحلية
-                    const newEntry = {
-                        id: id,
-                        fullName: data.fullName,
-                        phone: data.phone,
-                        email: data.email || '',
-                        highSchool: data.highSchool,
-                        branch: data.branch,
-                        wilaya: data.wilaya,
-                        registeredAt: new Date().toLocaleString('ar-DZ'),
-                        certId: certId
-                    };
-                    currentRegistrants.push(newEntry);
-                    localStorage.setItem('registrants_backup', JSON.stringify(currentRegistrants));
-                    updateAllUI(currentRegistrants);
-                    return certId;
-                } else {
-                    throw new Error(result.message || 'فشل الإضافة');
-                }
-            } catch (error) {
-                console.error('Add failed:', error);
-                // نحاول الحفظ محلياً كحل طوارئ
-                const newEntry = {
-                    id: id,
-                    fullName: data.fullName,
-                    phone: data.phone,
-                    email: data.email || '',
-                    highSchool: data.highSchool,
-                    branch: data.branch,
-                    wilaya: data.wilaya,
-                    registeredAt: new Date().toLocaleString('ar-DZ'),
-                    certId: certId
-                };
-                currentRegistrants.push(newEntry);
-                localStorage.setItem('registrants_backup', JSON.stringify(currentRegistrants));
-                updateAllUI(currentRegistrants);
-                showToast('⚠️ تم الحفظ محلياً بسبب مشكلة في الاتصال', 'error');
-                return certId;
-            }
-        }
-
-        // حذف مسجل
-        window.deleteRegistrant = async function(id) {
-            if (!confirm('هل أنت متأكد من حذف هذا المسجل؟')) return;
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=delete&id=${id}`);
-                const result = await response.json();
-                if (result.status === 'success') {
-                    currentRegistrants = currentRegistrants.filter(r => r.id !== id);
-                    localStorage.setItem('registrants_backup', JSON.stringify(currentRegistrants));
-                    updateAllUI(currentRegistrants);
-                    showToast('🗑️ تم حذف المسجل', 'info');
-                } else {
-                    throw new Error(result.message);
-                }
-            } catch (error) {
-                // حذف محلي إذا فشل الاتصال
-                currentRegistrants = currentRegistrants.filter(r => r.id !== id);
-                localStorage.setItem('registrants_backup', JSON.stringify(currentRegistrants));
-                updateAllUI(currentRegistrants);
-                showToast('🗑️ تم حذف المسجل (محلياً)', 'info');
-            }
-        };
-
-        // مسح الكل
-        window.clearAllRegistrants = async function() {
-            if (!confirm('⚠️ هل أنت متأكد من مسح جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
-            if (!confirm('تأكيد نهائي: مسح الكل؟')) return;
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=clear`);
-                const result = await response.json();
-                if (result.status === 'success') {
-                    currentRegistrants = [];
-                    localStorage.setItem('registrants_backup', JSON.stringify(currentRegistrants));
-                    updateAllUI(currentRegistrants);
-                    showToast('🗑️ تم مسح جميع المسجلين', 'info');
-                } else {
-                    throw new Error(result.message);
-                }
-            } catch (error) {
-                // مسح محلي
-                currentRegistrants = [];
-                localStorage.setItem('registrants_backup', JSON.stringify(currentRegistrants));
-                updateAllUI(currentRegistrants);
-                showToast('🗑️ تم مسح جميع المسجلين (محلياً)', 'info');
-            }
-        };
-
-        // ============================================================
-        //  تحديث الواجهة
-        // ============================================================
-        function updateAllUI(list) {
-            const count = list.length;
-            const counterEl = document.getElementById('participantCount');
-            counterEl.textContent = count;
-            counterEl.classList.remove('pop');
-            void counterEl.offsetWidth;
-            counterEl.classList.add('pop');
-
-            document.getElementById('adminCount').textContent = count;
-
-            if (isAdminLoggedIn()) {
-                renderAdminTable(list);
-            }
-        }
-
-        // ============================================================
-        //  THEME TOGGLE
+        //  THEME
         // ============================================================
         const themeToggle = document.getElementById('themeToggle');
         let darkMode = localStorage.getItem('darkMode') === 'true';
@@ -2151,7 +2148,7 @@
         });
 
         // ============================================================
-        //  SOUND SYSTEM
+        //  SOUND
         // ============================================================
         let soundEnabled = true;
         const soundToggle = document.getElementById('soundToggle');
@@ -2457,7 +2454,7 @@
                 return;
             }
 
-            // التحقق من عدم تكرار الهاتف (على البيانات الحالية من Google Sheets)
+            // التحقق من عدم تكرار الهاتف
             const existing = currentRegistrants.find(r => r.phone === phone);
             if (existing) {
                 showMsg('⚠️ هذا رقم الهاتف مسجل مسبقاً.', 'error');
@@ -2653,28 +2650,25 @@
         }, 1000);
 
         // ============================================================
-        //  INIT - جلب البيانات وفتح أول بطاقة
+        //  INIT - فتح أول بطاقة بعد التحميل
         // ============================================================
-        // جلب البيانات من Google Sheets فور تحميل الصفحة
-        fetchRegistrants();
-
-        // فتح أول بطاقة بعد التحميل
         setTimeout(() => {
             const firstCard = document.querySelector('.card');
             if (firstCard && !firstCard.classList.contains('open')) firstCard.classList.add('open');
-        }, 2600);
+        }, 2600); // بعد اختفاء شاشة التحميل بقليل
 
-        // التحقق من الوضع الليلي
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark');
             themeToggle.textContent = '☀️';
         }
 
-        console.log('🎓 يوم التوجيه الجامعي — نسخة Google Sheets');
+        console.log('🎓 يوم التوجيه الجامعي — النسخة الآمنة (Firebase + LocalStorage Fallback)');
         console.log('📅 الأيام: الثلاثاء 14, الأربعاء 15, الخميس 16 جويلية 2026');
         console.log('🔑 كود الإدارة: admin123');
-        console.log('📊 رابط الـ Script:', SCRIPT_URL);
-        console.log('✅ البيانات مخزنة في Google Sheets وتظهر للجميع.');
+        console.log('💾 وضع العمل:', dbMode === 'firebase' ? 'سحابي (Firebase)' : 'محلي (LocalStorage)');
+        if (dbMode === 'local') {
+            console.warn('⚠️ تأكد من ضبط بيانات Firebase بشكل صحيح للعمل السحابي المشترك.');
+        }
     </script>
 </body>
 </html>
