@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>يوم التوجيه الجامعي — النسخة التفاعلية</title>
-    <!-- ===== إضافة Firebase SDK ===== -->
+    <title>يوم التوجيه الجامعي — النسخة السحابية</title>
+
+    <!-- ===== FIREBASE SDK ===== -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>يوم التوجيه الجامعي — النسخة التفاعلية</title>
+
     <style>
         /* ===== RESET & BASE ===== */
         * {
@@ -592,7 +588,6 @@
             padding-top: 4px;
         }
 
-        /* day blocks */
         .day-block {
             margin-bottom: 18px;
         }
@@ -664,7 +659,6 @@
             margin-top: 1px;
         }
 
-        /* corners */
         .corners-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -781,7 +775,6 @@
             border-color: #7a5a3a;
         }
 
-        /* contacts */
         .contact-list {
             display: flex;
             flex-direction: column;
@@ -834,7 +827,6 @@
             transform: translateX(-4px);
         }
 
-        /* links */
         .links-list {
             display: flex;
             flex-direction: column;
@@ -889,7 +881,6 @@
             color: var(--navy);
         }
 
-        /* digital grid */
         .digital-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -918,7 +909,6 @@
             font-weight: 500;
         }
 
-        /* registration */
         .reg-form {
             display: flex;
             flex-direction: column;
@@ -1105,7 +1095,6 @@
             color: #ef9a9a;
         }
 
-        /* ===== ADMIN ACCESS ===== */
         .admin-access {
             text-align: center;
             margin-top: 24px;
@@ -1163,7 +1152,6 @@
             display: none;
         }
 
-        /* ===== ADMIN PANEL ===== */
         #adminPanel {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -1234,7 +1222,6 @@
             color: white;
         }
 
-        /* ===== CERTIFICATE MODAL ===== */
         .cert-modal {
             position: fixed;
             inset: 0;
@@ -1362,7 +1349,6 @@
             transform: scale(1.04);
         }
 
-        /* ===== CONFETTI ===== */
         .confetti-container {
             position: fixed;
             top: 0;
@@ -1391,7 +1377,6 @@
             }
         }
 
-        /* ===== TOAST NOTIFICATIONS ===== */
         #toastContainer {
             position: fixed;
             bottom: 80px;
@@ -1450,7 +1435,6 @@
             }
         }
 
-        /* ===== FOOTER ===== */
         footer {
             margin-top: 32px;
             padding: 24px 16px;
@@ -1464,7 +1448,6 @@
             color: var(--text);
         }
 
-        /* ===== TILT ===== */
         .tilt {
             transition: transform 0.1s ease;
             transform-style: preserve-3d;
@@ -1475,7 +1458,6 @@
             transform: translateZ(2px);
         }
 
-        /* ===== REVEAL ===== */
         .reveal {
             opacity: 0;
             transform: translateY(36px) scale(0.96);
@@ -1486,7 +1468,6 @@
             transform: translateY(0) scale(1);
         }
 
-        /* ===== PRINT STYLES ===== */
         @media print {
             body * {
                 visibility: hidden;
@@ -1833,14 +1814,129 @@
                                     <option value="18 - جيجل">18 - جيجل</option>
                                     <option value="19 - سطيف">19 - سطيف</option>
                                     <option value="20 - سعيدة">20 - سعيدة</option>
-                      
+                                    <option value="21 - سكيكدة">21 - سكيكدة</option>
+                                    <option value="22 - سيدي بلعباس">22 - سيدي بلعباس</option>
+                                    <option value="23 - عنابة">23 - عنابة</option>
+                                    <option value="24 - قالمة">24 - قالمة</option>
+                                    <option value="25 - قسنطينة">25 - قسنطينة</option>
+                                    <option value="26 - المدية">26 - المدية</option>
+                                    <option value="27 - مستغانم">27 - مستغانم</option>
+                                    <option value="28 - المسيلة">28 - المسيلة</option>
+                                    <option value="29 - معسكر">29 - معسكر</option>
+                                    <option value="30 - ورقلة">30 - ورقلة</option>
+                                    <option value="31 - وهران">31 - وهران</option>
+                                    <option value="32 - البيض">32 - البيض</option>
+                                    <option value="33 - إليزي">33 - إليزي</option>
+                                    <option value="34 - برج بوعريريج">34 - برج بوعريريج</option>
+                                    <option value="35 - بومرداس">35 - بومرداس</option>
+                                    <option value="36 - الطارف">36 - الطارف</option>
+                                    <option value="37 - تندوف">37 - تندوف</option>
+                                    <option value="38 - تيسمسيلت">38 - تيسمسيلت</option>
+                                    <option value="39 - الوادي">39 - الوادي</option>
+                                    <option value="40 - خنشلة">40 - خنشلة</option>
+                                    <option value="41 - سوق أهراس">41 - سوق أهراس</option>
+                                    <option value="42 - تيبازة">42 - تيبازة</option>
+                                    <option value="43 - ميلة">43 - ميلة</option>
+                                    <option value="44 - عين الدفلى">44 - عين الدفلى</option>
+                                    <option value="45 - النعامة">45 - النعامة</option>
+                                    <option value="46 - عين تيموشنت">46 - عين تيموشنت</option>
+                                    <option value="47 - غرداية">47 - غرداية</option>
+                                    <option value="48 - غليزان">48 - غليزان</option>
+                                    <option value="49 - برج باجي مختار">49 - برج باجي مختار</option>
+                                    <option value="50 - أولاد جلال">50 - أولاد جلال</option>
+                                    <option value="51 - بني عباس">51 - بني عباس</option>
+                                    <option value="52 - جانت">52 - جانت</option>
+                                    <option value="53 - عين صالح">53 - عين صالح</option>
+                                    <option value="54 - عين قزام">54 - عين قزام</option>
+                                    <option value="55 - توقورت">55 - توقورت</option>
+                                    <option value="56 - برج باجي مختار">56 - برج باجي مختار</option>
+                                    <option value="57 - المغير">57 - المغير</option>
+                                    <option value="58 - المنيعة">58 - المنيعة</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="reg-actions">
+                            <button type="submit" class="btn btn-primary" id="registerBtn">📝 تسجيل</button>
+                        </div>
+                    </form>
+                    <div id="msgBox" class="msg-box"></div>
+                    <p style="font-size:11px;color:var(--muted);margin-top:16px;text-align:center;">🔒 يتم تسجيل بياناتك بشكل آمن في السحاب، وتظهر للجميع فوراً.</p>
+                </div>
+            </div>
+        </div>
 
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    </div>
+
+    <!-- ===== ADMIN ACCESS ===== -->
+    <div class="admin-access">
+        <div class="admin-login" id="adminLoginBox">
+            <input type="password" id="adminPasswordInput" placeholder="🔑 كود الإدارة" maxlength="20" />
+            <button class="btn btn-success" id="adminLoginBtn">دخول</button>
+            <button class="btn btn-outline" id="adminLogoutBtn" style="display:none;">تسجيل الخروج</button>
+        </div>
+        <div class="login-error" id="loginError">⚠️ كود غير صحيح، حاول مرة أخرى.</div>
+    </div>
+
+    <!-- ===== ADMIN PANEL ===== -->
+    <div id="adminPanel" style="display:none;">
+        <h3>📋 قائمة المسجلين</h3>
+        <div class="admin-actions">
+            <input type="text" id="adminSearch" placeholder="🔍 بحث بالاسم أو الهاتف..." />
+            <button id="exportCsvBtn" class="btn btn-success" style="padding:8px 18px;font-size:13px;">📥 تصدير CSV</button>
+            <button id="clearAllBtn" class="btn btn-danger" style="padding:8px 18px;font-size:13px;">🗑️ مسح الكل</button>
+            <span style="align-self:center;font-size:14px;color:var(--muted);">👥 <strong id="adminCount">0</strong> مسجّل</span>
+            <button class="logout-btn" id="adminLogoutBtn2">🚪 خروج</button>
+        </div>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>البريد</th><th>الثانوية</th><th>الشعبة</th><th>الولاية</th><th style="text-align:center;">حذف</th></tr>
+                </thead>
+                <tbody id="adminTableBody">
+                    <tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted);">جاري تحميل البيانات...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center;">🔒 البيانات محفوظة في السحاب (Firebase) وتظهر للجميع.</p>
+    </div>
+
+    <!-- ===== CERTIFICATE MODAL ===== -->
+    <div class="cert-modal" id="certModal">
+        <div class="cert-content" id="certContent">
+            <span class="cert-seal">🎓</span>
+            <h2>شهادة مشاركة</h2>
+            <div class="cert-sub">— يوم التوجيه الجامعي —</div>
+            <div class="cert-divider"></div>
+            <div class="cert-name" id="certName">أحمد بن سالم</div>
+            <div class="cert-detail">
+                <p>تشهد هذه الشهادة أن<br /><strong id="certFullName">الاسم</strong><br />قد سجل في <strong>يوم التوجيه الجامعي</strong><br />وقد حصل على شهادة تقديرية لتفاعله ومشاركته الفاعلة.</p>
+            </div>
+            <div class="cert-id" id="certId"># CERT-0000</div>
+            <div class="cert-footer">
+                <span class="cert-date" id="certDate">2026-07-08</span>
+                <span style="font-size:12px;color:var(--gold);">✦ المغير ✦</span>
+            </div>
+            <div class="cert-actions no-print">
+                <button class="btn btn-gold" id="downloadCertBtn">📥 تحميل الشهادة</button>
+                <button class="btn btn-primary" id="printCertBtn">🖨️ طباعة</button>
+                <button class="btn btn-outline" onclick="closeCert()">✕ إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <strong>المنظمة الوطنية للشباب من أجل الجزائر — المكتب التنفيذي الولائي المغير</strong><br />
+        <span style="margin-top:4px;display:block">معًا نختار بذكاء ✦ Ensemble, choisissons avec intelligence</span>
+    </footer>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js">
+    </script>
     <script>
         // ============================================================
-        //  FIREBASE CONFIG — ⬅️ الصق بيانات مشروعك هنا
+        //  ⚠️ IMPORTANT: ضع هنا بيانات مشروعك من Firebase Console ⚠️
         // ============================================================
-        const firebaseConfig = {
+       const firebaseConfig = {
             apiKey: "AIzaSyBjMoi2os-C0DxcumjwKSmhAYboYWfGt64",
             authDomain: "guidance-day.firebaseapp.com",
             databaseURL: "https://guidance-day-default-rtdb.firebaseio.com",
@@ -1849,12 +1945,14 @@
             messagingSenderId: "190184922202",
             appId: "1:190184922202:web:175fd4be9c69a117e78c63"
         };
+
+        // ===== تهيئة Firebase =====
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const registrantsRef = database.ref('registrants');
 
         // ============================================================
-        //  إعدادات الحدث (كما هي)
+        //  إعدادات التاريخ
         // ============================================================
         const EVENT_DATES = {
             day1: new Date(2026, 6, 14),
@@ -1862,7 +1960,6 @@
             day3: new Date(2026, 6, 16),
         };
         const EVENT_START = EVENT_DATES.day1;
-        const DAY_NAMES = ['الثلاثاء', 'الأربعاء', 'الخميس'];
         const MONTH_NAMES = ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
 
         function formatDate(d) { return d.getDate() + ' ' + MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear(); }
@@ -1877,18 +1974,312 @@
         document.getElementById('progDay3').textContent = '— ' + formatDateShort(EVENT_DATES.day3);
 
         // ============================================================
-        //  SPLASH, THEME, SOUND, CARD TOGGLE ... (كل الدوال كما هي)
-        //  سأحتفظ بها كلها كما هي، لكن سأستبدل دوال التسجيل والإدارة فقط.
+        //  SPLASH SCREEN
         // ============================================================
-
-        // ... (ضع هنا كل الكود الأصلي باستثناء دوال getRegistrants, saveRegistrants, updateCounters, registerForm, admin table)
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('splash').classList.add('hide');
+                setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 800);
+            }, 2000);
+        });
 
         // ============================================================
-        //  دوال Firebase الجديدة
+        //  THEME
+        // ============================================================
+        const themeToggle = document.getElementById('themeToggle');
+        let darkMode = localStorage.getItem('darkMode') === 'true';
+        if (darkMode) { document.body.classList.add('dark');
+            themeToggle.textContent = '☀️'; }
+        themeToggle.addEventListener('click', () => {
+            darkMode = !darkMode;
+            document.body.classList.toggle('dark', darkMode);
+            localStorage.setItem('darkMode', darkMode);
+            themeToggle.textContent = darkMode ? '☀️' : '🌙';
+            playSound('click');
+        });
+
+        // ============================================================
+        //  SOUND
+        // ============================================================
+        let soundEnabled = true;
+        const soundToggle = document.getElementById('soundToggle');
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                try { audioCtx = new(window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type = 'click') {
+            if (!soundEnabled) return;
+            initAudio();
+            if (!audioCtx) return;
+            try {
+                const now = audioCtx.currentTime;
+                if (type === 'click') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.frequency.value = 880;
+                    osc.type = 'sine';
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                    osc.start(now);
+                    osc.stop(now + 0.06);
+                } else if (type === 'success') {
+                    const notes = [523, 659, 784, 1047];
+                    notes.forEach((freq, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.frequency.value = freq;
+                        osc.type = 'sine';
+                        const t = now + i * 0.08;
+                        gain.gain.setValueAtTime(0.07, t);
+                        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+                        osc.start(t);
+                        osc.stop(t + 0.12);
+                    });
+                } else if (type === 'error') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.frequency.value = 280;
+                    osc.type = 'sawtooth';
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'certificate') {
+                    const notes = [523, 659, 784, 880, 1047];
+                    notes.forEach((freq, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.frequency.value = freq;
+                        osc.type = 'sine';
+                        const t = now + i * 0.06;
+                        gain.gain.setValueAtTime(0.06, t);
+                        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+                        osc.start(t);
+                        osc.stop(t + 0.15);
+                    });
+                }
+            } catch (e) { /* ignore */ }
+        }
+
+        soundToggle.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
+            if (soundEnabled) playSound('click');
+        });
+
+        document.addEventListener('click', (e) => {
+            const target = e.target.closest(
+                '.card-header, .corner-card, .progress-step, .btn, .link-item, .contact-number, .theme-toggle, .sound-toggle, .btn-close-cert, #adminLoginBtn, #adminLogoutBtn, #adminLogoutBtn2, #downloadCertBtn, #printCertBtn'
+                );
+            if (target) {
+                if (target.closest('#registerBtn')) return;
+                if (target.id === 'adminLoginBtn' || target.id === 'adminLogoutBtn' || target.id === 'adminLogoutBtn2')
+                return;
+                if (target.id === 'downloadCertBtn' || target.id === 'printCertBtn') return;
+                playSound('click');
+            }
+        });
+
+        // ============================================================
+        //  CARD TOGGLE
+        // ============================================================
+        function toggleCard(headerEl) {
+            const card = headerEl.closest('.card');
+            if (!card) return;
+            const wasOpen = card.classList.contains('open');
+            document.querySelectorAll('.card.open').forEach(c => { if (c !== card) c.classList.remove('open'); });
+            if (wasOpen) card.classList.remove('open');
+            else card.classList.add('open');
+            playSound('click');
+        }
+
+        // ============================================================
+        //  SCROLL REVEAL
+        // ============================================================
+        const revealEls = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
+        revealEls.forEach(el => revealObserver.observe(el));
+
+        // ============================================================
+        //  3D TILT
+        // ============================================================
+        document.querySelectorAll('.tilt').forEach(el => {
+            el.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                this.style.transform = `perspective(800px) rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
+            });
+            el.addEventListener('mouseleave', function() {
+                this.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)';
+                this.style.transition = 'transform 0.3s ease';
+                setTimeout(() => { this.style.transition = ''; }, 300);
+            });
+        });
+
+        // ============================================================
+        //  PROGRESS
+        // ============================================================
+        const steps = document.querySelectorAll('.progress-step');
+        const fill = document.getElementById('progressFill');
+        steps.forEach((step, i) => {
+            step.addEventListener('click', () => {
+                steps.forEach((s, idx) => {
+                    s.classList.toggle('active', idx === i);
+                    s.classList.toggle('done', idx < i);
+                });
+                fill.style.width = (i / (steps.length - 1)) * 100 + '%';
+                const cards = document.querySelectorAll('.card');
+                if (cards[i]) { cards[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    cards[i].classList.add('open'); }
+                playSound('click');
+            });
+        });
+
+        // ============================================================
+        //  CORNER DETAIL
+        // ============================================================
+        function showCornerDetail(title, emoji, desc) {
+            const box = document.getElementById('cornerDetailBox');
+            if (!box) return;
+            document.getElementById('cornerDetailEmoji').textContent = emoji;
+            document.getElementById('cornerDetailTitle').textContent = title;
+            document.getElementById('cornerDetailDesc').textContent = desc;
+            box.style.display = 'block';
+            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            box.style.transition = 'background 0.3s';
+            box.style.background = '#e0f2f1';
+            setTimeout(() => { box.style.background = ''; }, 400);
+            playSound('click');
+        }
+
+        // ============================================================
+        //  TOAST
+        // ============================================================
+        function showToast(message, type = 'info', duration = 3500) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+            toast.innerHTML = `<span>${icons[type] || 'ℹ️'}</span> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('hide');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+            if (type === 'success') playSound('success');
+            else if (type === 'error') playSound('error');
+            else playSound('click');
+        }
+
+        // ============================================================
+        //  CONFETTI
+        // ============================================================
+        function fireConfetti() {
+            const container = document.createElement('div');
+            container.className = 'confetti-container';
+            document.body.appendChild(container);
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#3f51b5', '#4caf50', '#ffeb3b', '#ff9800', '#00bcd4', '#c9a84c',
+                '#f5d97a'
+            ];
+            for (let i = 0; i < 80; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.top = '-10px';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.width = (Math.random() * 8 + 4) + 'px';
+                piece.style.height = (Math.random() * 8 + 4) + 'px';
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                piece.style.animationDuration = (Math.random() * 1.2 + 0.8) + 's';
+                piece.style.animationDelay = (Math.random() * 0.6) + 's';
+                container.appendChild(piece);
+            }
+            setTimeout(() => container.remove(), 2500);
+        }
+
+        // ============================================================
+        //  CERTIFICATE
+        // ============================================================
+        function generateCertId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = 'CERT-';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        function showCertificate(name, certId) {
+            document.getElementById('certName').textContent = name;
+            document.getElementById('certFullName').textContent = name;
+            document.getElementById('certId').textContent = certId || generateCertId();
+            document.getElementById('certDate').textContent = formatDate(new Date());
+            document.getElementById('certModal').classList.add('show');
+            playSound('certificate');
+        }
+
+        window.closeCert = function() {
+            document.getElementById('certModal').classList.remove('show');
+        };
+
+        document.getElementById('downloadCertBtn').addEventListener('click', function() {
+            const certContent = document.getElementById('certContent');
+            html2canvas(certContent, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                allowTaint: true,
+                useCORS: true,
+                logging: false,
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'شهادة_مشاركة_' + document.getElementById('certName').textContent + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showToast('✅ تم تحميل الشهادة بنجاح!', 'success');
+            }).catch(() => {
+                showToast('⚠️ حدث خطأ أثناء تحميل الشهادة، حاول استخدام الطباعة.', 'error');
+            });
+        });
+
+        document.getElementById('printCertBtn').addEventListener('click', function() {
+            window.print();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeCert();
+                document.querySelectorAll('.card.open').forEach(c => c.classList.remove('open'));
+            }
+        });
+
+        document.getElementById('certModal').addEventListener('click', function(e) {
+            if (e.target === this) closeCert();
+        });
+
+        // ============================================================
+        //  FIREBASE: READ & UPDATE UI
         // ============================================================
         let currentRegistrants = [];
 
-        // تحميل البيانات من Firebase وعرضها
+        // استمع لأي تغيير في قاعدة البيانات
         registrantsRef.on('value', snapshot => {
             const data = snapshot.val();
             currentRegistrants = data ? Object.values(data) : [];
@@ -1896,19 +2287,26 @@
         });
 
         function updateAllUI(list) {
-            // تحديث العداد
             const count = list.length;
-            document.getElementById('participantCount').textContent = count;
-            document.getElementById('participantCount').classList.remove('pop');
-            void document.getElementById('participantCount').offsetWidth;
-            document.getElementById('participantCount').classList.add('pop');
+            // تحديث العداد في الهيدر
+            const counterEl = document.getElementById('participantCount');
+            counterEl.textContent = count;
+            counterEl.classList.remove('pop');
+            void counterEl.offsetWidth;
+            counterEl.classList.add('pop');
+
+            // تحديث عداد الإدارة
             document.getElementById('adminCount').textContent = count;
 
-            // تحديث جدول الإدارة (إذا كان المدير مسجل الدخول)
-            if (isAdminLoggedIn()) renderAdminTable(list);
+            // تحديث جدول الإدارة إذا كان المدير مسجل الدخول
+            if (isAdminLoggedIn()) {
+                renderAdminTable(list);
+            }
         }
 
-        // إضافة مسجل جديد
+        // ============================================================
+        //  FIREBASE: WRITE
+        // ============================================================
         async function addRegistrant(data) {
             const newRef = registrantsRef.push();
             const certId = generateCertId();
@@ -1916,7 +2314,7 @@
                 id: newRef.key,
                 fullName: data.fullName,
                 phone: data.phone,
-                email: data.email,
+                email: data.email || '',
                 highSchool: data.highSchool,
                 branch: data.branch,
                 wilaya: data.wilaya,
@@ -1927,31 +2325,23 @@
             return certId;
         }
 
-        // حذف مسجل
-        async function deleteRegistrant(id) {
+        window.deleteRegistrant = async function(id) {
             if (!confirm('هل أنت متأكد من حذف هذا المسجل؟')) return;
             await registrantsRef.child(id).remove();
             showToast('🗑️ تم حذف المسجل', 'info');
-        }
+            playSound('click');
+        };
 
-        // مسح الكل
         async function clearAllRegistrants() {
             if (!confirm('⚠️ هل أنت متأكد من مسح جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
             if (!confirm('تأكيد نهائي: مسح الكل؟')) return;
             await registrantsRef.remove();
             showToast('🗑️ تم مسح جميع المسجلين', 'info');
-        }
-
-        // توليد رقم شهادة
-        function generateCertId() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let result = 'CERT-';
-            for (let i = 0; i < 6; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
-            return result;
+            playSound('click');
         }
 
         // ============================================================
-        //  تعديل نموذج التسجيل
+        //  REGISTRATION FORM
         // ============================================================
         const form = document.getElementById('registerForm');
         const msgBox = document.getElementById('msgBox');
@@ -1974,18 +2364,21 @@
             const highSchool = document.getElementById('highSchool').value.trim();
             const branch = document.getElementById('branch').value;
             const wilaya = document.getElementById('wilaya').value;
+
             if (!fullName || !phone || !highSchool || !branch || !wilaya) {
                 showMsg('⚠️ الرجاء ملء جميع الحقول المطلوبة (*)', 'error');
                 showToast('⚠️ الرجاء ملء جميع الحقول المطلوبة', 'error');
                 return;
             }
-            // التحقق من عدم تكرار الهاتف (على Firebase)
+
+            // التحقق من عدم تكرار الهاتف (على البيانات الحالية من Firebase)
             const existing = currentRegistrants.find(r => r.phone === phone);
             if (existing) {
                 showMsg('⚠️ هذا رقم الهاتف مسجل مسبقاً.', 'error');
                 showToast('⚠️ رقم الهاتف مسجل مسبقاً', 'error');
                 return;
             }
+
             try {
                 const certId = await addRegistrant({ fullName, phone, email, highSchool, branch, wilaya });
                 showMsg('✅ تم تسجيلك بنجاح! 🎉', 'success');
@@ -2003,7 +2396,7 @@
         });
 
         // ============================================================
-        //  تعديل لوحة الإدارة
+        //  ADMIN LOGIN / LOGOUT
         // ============================================================
         const ADMIN_CODE = 'admin123';
         let adminLoggedIn = false;
@@ -2014,7 +2407,6 @@
         const adminLogoutBtn2 = document.getElementById('adminLogoutBtn2');
         const loginError = document.getElementById('loginError');
         const adminPanelEl = document.getElementById('adminPanel');
-        const adminLoginBox = document.getElementById('adminLoginBox');
 
         function isAdminLoggedIn() { return adminLoggedIn; }
 
@@ -2055,12 +2447,14 @@
         adminLogoutBtn.addEventListener('click', adminLogout);
         adminLogoutBtn2.addEventListener('click', adminLogout);
 
-        // عرض الجدول
+        // ============================================================
+        //  ADMIN TABLE
+        // ============================================================
         const adminSearch = document.getElementById('adminSearch');
         const adminTableBody = document.getElementById('adminTableBody');
 
         function renderAdminTable(list) {
-            const filter = adminSearch.value;
+            const filter = adminSearch.value.trim();
             const filtered = list.filter(r => r.fullName.includes(filter) || r.phone.includes(filter));
             if (filtered.length === 0) {
                 adminTableBody.innerHTML =
@@ -2089,13 +2483,15 @@
             if (isAdminLoggedIn()) renderAdminTable(currentRegistrants);
         });
 
-        // أزرار الإدارة
+        // ============================================================
+        //  ADMIN: EXPORT & CLEAR
+        // ============================================================
         document.getElementById('exportCsvBtn').addEventListener('click', function() {
             if (currentRegistrants.length === 0) { showToast('⚠️ لا يوجد مسجلون لتصديرهم', 'error'); return; }
             const headers = ['الاسم', 'الهاتف', 'البريد', 'الثانوية', 'الشعبة', 'الولاية', 'تاريخ التسجيل', 'رقم الشهادة'];
             const rows = currentRegistrants.map(r => [r.fullName, r.phone, r.email || '', r.highSchool, r.branch, r.wilaya ||
-                '', r.registeredAt || '', r.certId || ''
-            ]);
+                    '', r.registeredAt || '', r.certId || ''
+                ]);
             let csv = '\uFEFF' + headers.join(',') + '\n';
             rows.forEach(row => { csv += row.map(c => `"${c}"`).join(',') + '\n'; });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -2111,41 +2507,84 @@
         document.getElementById('clearAllBtn').addEventListener('click', clearAllRegistrants);
 
         // ============================================================
-        //  باقي الدوال (TOAST, CONFETTI, CERTIFICATE, COUNTDOWN, ...)
-        //  تبقى كما هي تماماً، لا حاجة لتغييرها.
+        //  COUNTDOWN TIMER
         // ============================================================
-        // ... (انسخ هنا كل دوال toast, confetti, certificate, countdown, 
-        //     theme, sound, progress, corner detail, scroll reveal, etc.)
-        //     تأكد من أن جميع الدوال المذكورة موجودة، 
-        //     لكن لا تنسخ دوال getRegistrants و saveRegistrants القديمة.
+        function updateCountdown() {
+            const now = new Date();
+            const target = new Date(EVENT_START);
+            const diff = target - now;
 
-        // ============================================================
-        //  أخيراً: تهيئة العرض عند تحميل الصفحة
-        // ============================================================
-        // لأن المستمع registrantsRef.on('value', ...) سيقوم بتحديث كل شيء تلقائياً،
-        // لا نحتاج لاستدعاء updateAllUI يدوياً.
-        // ولكن نفتح أول بطاقة بعد الشاشة التمهيدية:
-        setTimeout(() => {
-            const firstCard = document.querySelector('.card');
-            if (firstCard && !firstCard.classList.contains('open')) firstCard.classList.add('open');
-        }, 2200);
+            const cdDays = document.getElementById('cdDays');
+            const cdHours = document.getElementById('cdHours');
+            const cdMinutes = document.getElementById('cdMinutes');
+            const cdSeconds = document.getElementById('cdSeconds');
+            const cdLabel = document.getElementById('countdownLabel');
 
-        // تفعيل الوضع الليلي إذا كان محفوظاً
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark');
-            document.getElementById('themeToggle').textContent = '☀️';
+            if (diff <= 0) {
+                cdDays.textContent = '00';
+                cdHours.textContent = '00';
+                cdMinutes.textContent = '00';
+                cdSeconds.textContent = '00';
+                cdLabel.textContent = '🎉 انطلق!';
+                document.getElementById('countdownBar').style.borderColor = 'var(--gold)';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            cdDays.textContent = String(days).padStart(2, '0');
+            cdHours.textContent = String(hours).padStart(2, '0');
+            cdMinutes.textContent = String(minutes).padStart(2, '0');
+            cdSeconds.textContent = String(seconds).padStart(2, '0');
+            cdLabel.textContent = days === 1 ? 'يوم' : days > 1 ? 'أيام' : '';
         }
 
-        // تحديث العداد المؤقت كل ثانية
+        function highlightToday() {
+            const now = new Date();
+            const todayStr = now.toDateString();
+            const pills = [
+                { el: document.getElementById('day1Pill'), date: EVENT_DATES.day1 },
+                { el: document.getElementById('day2Pill'), date: EVENT_DATES.day2 },
+                { el: document.getElementById('day3Pill'), date: EVENT_DATES.day3 },
+            ];
+            pills.forEach(p => {
+                if (p.date.toDateString() === todayStr) {
+                    p.el.classList.add('active-day');
+                } else {
+                    p.el.classList.remove('active-day');
+                }
+            });
+        }
+
+        updateCountdown();
+        highlightToday();
         setInterval(() => {
             updateCountdown();
             highlightToday();
         }, 1000);
 
+        // ============================================================
+        //  INIT
+        // ============================================================
+        // فتح أول بطاقة بعد انتهاء شاشة البداية
+        setTimeout(() => {
+            const firstCard = document.querySelector('.card');
+            if (firstCard && !firstCard.classList.contains('open')) firstCard.classList.add('open');
+        }, 2200);
+
+        // التحقق من الوضع الليلي
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark');
+            themeToggle.textContent = '☀️';
+        }
+
         console.log('🎓 يوم التوجيه الجامعي — النسخة السحابية مع Firebase');
         console.log('📅 الأيام: الثلاثاء 14, الأربعاء 15, الخميس 16 جويلية 2026');
         console.log('🔑 كود الإدارة: admin123');
-        console.log('✅ البيانات مشتركة بين جميع المتصفحات عبر Firebase');
+        console.log('✅ البيانات مشتركة بين جميع المتصفحات والأجهزة عبر Firebase');
     </script>
 </body>
 </html>
