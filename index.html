@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>يوم التوجيه الجامعي — النسخة التفاعلية</title>
+    <title>يوم التوجيه الجامعي — النسخة المتطورة</title>
+
+    <!-- ===== FIREBASE SDK ===== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
     <style>
-        /* ===== RESET & BASE ===== */
+        /* ===== جميع أنماط CSS كما هي (لم تتغير) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -583,7 +588,6 @@
             padding-top: 4px;
         }
 
-        /* day blocks */
         .day-block {
             margin-bottom: 18px;
         }
@@ -655,7 +659,6 @@
             margin-top: 1px;
         }
 
-        /* corners */
         .corners-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -772,7 +775,6 @@
             border-color: #7a5a3a;
         }
 
-        /* contacts */
         .contact-list {
             display: flex;
             flex-direction: column;
@@ -825,7 +827,6 @@
             transform: translateX(-4px);
         }
 
-        /* links */
         .links-list {
             display: flex;
             flex-direction: column;
@@ -880,7 +881,6 @@
             color: var(--navy);
         }
 
-        /* digital grid */
         .digital-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -909,7 +909,6 @@
             font-weight: 500;
         }
 
-        /* registration */
         .reg-form {
             display: flex;
             flex-direction: column;
@@ -1096,7 +1095,6 @@
             color: #ef9a9a;
         }
 
-        /* ===== ADMIN ACCESS ===== */
         .admin-access {
             text-align: center;
             margin-top: 24px;
@@ -1154,7 +1152,6 @@
             display: none;
         }
 
-        /* ===== ADMIN PANEL ===== */
         #adminPanel {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -1225,7 +1222,6 @@
             color: white;
         }
 
-        /* ===== CERTIFICATE MODAL ===== */
         .cert-modal {
             position: fixed;
             inset: 0;
@@ -1353,7 +1349,6 @@
             transform: scale(1.04);
         }
 
-        /* ===== CONFETTI ===== */
         .confetti-container {
             position: fixed;
             top: 0;
@@ -1382,7 +1377,6 @@
             }
         }
 
-        /* ===== TOAST NOTIFICATIONS ===== */
         #toastContainer {
             position: fixed;
             bottom: 80px;
@@ -1441,7 +1435,6 @@
             }
         }
 
-        /* ===== FOOTER ===== */
         footer {
             margin-top: 32px;
             padding: 24px 16px;
@@ -1455,7 +1448,6 @@
             color: var(--text);
         }
 
-        /* ===== TILT ===== */
         .tilt {
             transition: transform 0.1s ease;
             transform-style: preserve-3d;
@@ -1466,7 +1458,6 @@
             transform: translateZ(2px);
         }
 
-        /* ===== REVEAL ===== */
         .reveal {
             opacity: 0;
             transform: translateY(36px) scale(0.96);
@@ -1477,7 +1468,6 @@
             transform: translateY(0) scale(1);
         }
 
-        /* ===== PRINT STYLES ===== */
         @media print {
             body * {
                 visibility: hidden;
@@ -1870,7 +1860,9 @@
                         </div>
                     </form>
                     <div id="msgBox" class="msg-box"></div>
-                    <p style="font-size:11px;color:var(--muted);margin-top:16px;text-align:center;">🔒 يتم تسجيل بياناتك بشكل آمن. رقم الهاتف يستخدم مرة واحدة فقط.</p>
+                    <p style="font-size:11px;color:var(--muted);margin-top:16px;text-align:center;">
+                        🔒 البيانات تُحفظ في السحاب (Firebase) — وفي حال تعذر الاتصال، تُحفظ محلياً كنسخة احتياطية.
+                    </p>
                 </div>
             </div>
         </div>
@@ -1903,11 +1895,11 @@
                     <tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>البريد</th><th>الثانوية</th><th>الشعبة</th><th>الولاية</th><th style="text-align:center;">حذف</th></tr>
                 </thead>
                 <tbody id="adminTableBody">
-                    <tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted);">لا يوجد مسجلون</td></tr>
+                    <tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted);">جاري تحميل البيانات...</td></tr>
                 </tbody>
             </table>
         </div>
-        <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center;">🔒 البيانات محفوظة على سيرفر مشترك ومتاحة لجميع الزوار.</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center;">🔒 البيانات محفوظة في السحاب (Firebase) وتظهر للجميع.</p>
     </div>
 
     <!-- ===== CERTIFICATE MODAL ===== -->
@@ -1944,50 +1936,201 @@
     </script>
     <script>
         // ============================================================
-        //  CONFIG
+        //  ⚠️ IMPORTANT: ضع بيانات مشروعك من Firebase Console هنا
+        //  إذا تركتها كما هي، سيعمل الموقع باستخدام التخزين المحلي فقط.
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2PwB4hChtdbB6kka3ON8ROMBYm-X3C_k",
+            authDomain: "vcf-x-3bbb0.firebaseapp.com",
+            databaseURL: "https://vcf-x-3bbb0-default-rtdb.firebaseio.com",
+            projectId: "vcf-x-3bbb0",
+            storageBucket: "vcf-x-3bbb0.firebasestorage.app",
+            messagingSenderId: "33485187197",
+            appId: "1:33485187197:web:1a51b010f6c0d5ddc8e914"
+        };
+
+        // ============================================================
+        //  FORCE HIDE SPLASH — مضمون 100% حتى لو حدث خطأ
+        // ============================================================
+        setTimeout(() => {
+            const splash = document.getElementById('splash');
+            if (splash) {
+                splash.classList.add('hide');
+                setTimeout(() => { splash.style.display = 'none'; }, 800);
+            }
+        }, 2500); // 2.5 ثانية كافية جداً
+
+        // ============================================================
+        //  FIREBASE WITH FALLBACK (LocalStorage)
+        // ============================================================
+        let dbMode = 'initializing';
+        let currentRegistrants = [];
+        let registrantsRef = null;
+
+        // دوال التخزين المحلي (الاحتياطي)
+        function getLocalRegistrants() {
+            try { return JSON.parse(localStorage.getItem('registrants_fallback')) || []; } catch { return []; }
+        }
+
+        function saveLocalRegistrants(list) {
+            localStorage.setItem('registrants_fallback', JSON.stringify(list));
+            currentRegistrants = list;
+            updateAllUI(list);
+        }
+
+        // محاولة تهيئة Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const database = firebase.database();
+            registrantsRef = database.ref('registrants');
+
+            // الاستماع للتغييرات في Firebase
+            registrantsRef.on('value', snapshot => {
+                const data = snapshot.val();
+                const list = data ? Object.values(data) : [];
+                currentRegistrants = list;
+                // حفظ نسخة احتياطية في localStorage
+                localStorage.setItem('registrants_fallback', JSON.stringify(list));
+                updateAllUI(list);
+                if (dbMode !== 'firebase') {
+                    dbMode = 'firebase';
+                    console.log('✅ Firebase connected successfully.');
+                    showToast('✅ متصل بقاعدة البيانات السحابية', 'success');
+                }
+            }, error => {
+                console.warn('⚠️ Firebase connection lost, switching to local backup.', error);
+                dbMode = 'local';
+                loadLocalFallback();
+                showToast('⚠️ تم التبديل إلى التخزين المحلي', 'error');
+            });
+
+            dbMode = 'firebase';
+        } catch (e) {
+            console.error('❌ Firebase initialization failed:', e);
+            dbMode = 'local';
+            loadLocalFallback();
+            showToast('⚠️ تعذر الاتصال بالسحاب، استخدام التخزين المحلي', 'error');
+        }
+
+        function loadLocalFallback() {
+            const list = getLocalRegistrants();
+            currentRegistrants = list;
+            updateAllUI(list);
+        }
+
+        // ============================================================
+        //  دوال الإضافة والحذف (تعمل مع Firebase و LocalStorage)
+        // ============================================================
+        async function addRegistrant(data) {
+            const certId = generateCertId();
+            const entry = {
+                id: Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                fullName: data.fullName,
+                phone: data.phone,
+                email: data.email || '',
+                highSchool: data.highSchool,
+                branch: data.branch,
+                wilaya: data.wilaya,
+                registeredAt: new Date().toLocaleString('ar-DZ'),
+                certificate: true,
+                certId: certId
+            };
+
+            if (dbMode === 'firebase' && registrantsRef) {
+                try {
+                    const newRef = registrantsRef.push();
+                    await newRef.set({ ...entry, id: newRef.key });
+                    return certId;
+                } catch (e) {
+                    console.warn('Firebase write failed, saving locally.', e);
+                    // فشل الكتابة في Firebase، نكتب محلياً
+                    const list = getLocalRegistrants();
+                    list.push(entry);
+                    saveLocalRegistrants(list);
+                    return certId;
+                }
+            } else {
+                // الوضع المحلي
+                const list = getLocalRegistrants();
+                list.push(entry);
+                saveLocalRegistrants(list);
+                return certId;
+            }
+        }
+
+        window.deleteRegistrant = async function(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا المسجل؟')) return;
+            if (dbMode === 'firebase' && registrantsRef) {
+                try {
+                    await registrantsRef.child(id).remove();
+                    showToast('🗑️ تم حذف المسجل', 'info');
+                    return;
+                } catch (e) {
+                    console.warn('Firebase delete failed, deleting locally.', e);
+                }
+            }
+            // حذف محلي
+            let list = getLocalRegistrants();
+            list = list.filter(r => r.id !== id);
+            saveLocalRegistrants(list);
+            showToast('🗑️ تم حذف المسجل (محلياً)', 'info');
+        };
+
+        async function clearAllRegistrants() {
+            if (!confirm('⚠️ هل أنت متأكد من مسح جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
+            if (!confirm('تأكيد نهائي: مسح الكل؟')) return;
+            if (dbMode === 'firebase' && registrantsRef) {
+                try {
+                    await registrantsRef.remove();
+                    showToast('🗑️ تم مسح جميع المسجلين', 'info');
+                    return;
+                } catch (e) {
+                    console.warn('Firebase clear failed, clearing locally.', e);
+                }
+            }
+            saveLocalRegistrants([]);
+            showToast('🗑️ تم مسح جميع المسجلين (محلياً)', 'info');
+        }
+
+        // ============================================================
+        //  UPDATE UI
+        // ============================================================
+        function updateAllUI(list) {
+            const count = list.length;
+            const counterEl = document.getElementById('participantCount');
+            counterEl.textContent = count;
+            counterEl.classList.remove('pop');
+            void counterEl.offsetWidth;
+            counterEl.classList.add('pop');
+
+            document.getElementById('adminCount').textContent = count;
+
+            if (isAdminLoggedIn()) {
+                renderAdminTable(list);
+            }
+        }
+
+        // ============================================================
+        //  إعدادات التاريخ
         // ============================================================
         const EVENT_DATES = {
-            day1: new Date(2026, 6, 14), // Tue 14 July 2026
-            day2: new Date(2026, 6, 15), // Wed 15 July 2026
-            day3: new Date(2026, 6, 16), // Thu 16 July 2026
+            day1: new Date(2026, 6, 14),
+            day2: new Date(2026, 6, 15),
+            day3: new Date(2026, 6, 16),
         };
         const EVENT_START = EVENT_DATES.day1;
-
-        // ============================================================
-        //  SHARED STORAGE (Google Apps Script Web App)
-        //  ضع هنا الرابط اللي تحصل عليه بعد نشر السكريبت (خطوات في الأسفل)
-        // ============================================================
-        const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbz-i_vcQnyRItvaU8Lve3XPxmCRENT5eo9wwHFPu1oR8ClcSFBmQe8Rdi2mHOer7ceMWA/exec';
-        const POLL_INTERVAL_MS = 5000; // تحديث القائمة كل 5 ثواني
-
-        const DAY_NAMES = ['الثلاثاء', 'الأربعاء', 'الخميس'];
         const MONTH_NAMES = ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
 
-        function formatDate(d) {
-            return d.getDate() + ' ' + MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear();
-        }
+        function formatDate(d) { return d.getDate() + ' ' + MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear(); }
 
-        function formatDateShort(d) {
-            return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-        }
+        function formatDateShort(d) { return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear(); }
 
-        // Set dates in UI
         document.getElementById('day1Date').textContent = formatDate(EVENT_DATES.day1);
         document.getElementById('day2Date').textContent = formatDate(EVENT_DATES.day2);
         document.getElementById('day3Date').textContent = formatDate(EVENT_DATES.day3);
         document.getElementById('progDay1').textContent = '— ' + formatDateShort(EVENT_DATES.day1);
         document.getElementById('progDay2').textContent = '— ' + formatDateShort(EVENT_DATES.day2);
         document.getElementById('progDay3').textContent = '— ' + formatDateShort(EVENT_DATES.day3);
-
-        // ============================================================
-        //  SPLASH
-        // ============================================================
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('splash').classList.add('hide');
-                setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 800);
-            }, 2000);
-        });
 
         // ============================================================
         //  THEME
@@ -2005,7 +2148,7 @@
         });
 
         // ============================================================
-        //  SOUND SYSTEM — improved
+        //  SOUND
         // ============================================================
         let soundEnabled = true;
         const soundToggle = document.getElementById('soundToggle');
@@ -2026,7 +2169,6 @@
             if (!audioCtx) return;
             try {
                 const now = audioCtx.currentTime;
-
                 if (type === 'click') {
                     const osc = audioCtx.createOscillator();
                     const gain = audioCtx.createGain();
@@ -2039,7 +2181,6 @@
                     osc.start(now);
                     osc.stop(now + 0.06);
                 } else if (type === 'success') {
-                    // Ascending pleasant chime
                     const notes = [523, 659, 784, 1047];
                     notes.forEach((freq, i) => {
                         const osc = audioCtx.createOscillator();
@@ -2066,7 +2207,6 @@
                     osc.start(now);
                     osc.stop(now + 0.3);
                 } else if (type === 'certificate') {
-                    // Gentle fanfare
                     const notes = [523, 659, 784, 880, 1047];
                     notes.forEach((freq, i) => {
                         const osc = audioCtx.createOscillator();
@@ -2081,17 +2221,6 @@
                         osc.start(t);
                         osc.stop(t + 0.15);
                     });
-                } else if (type === 'countdown') {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.frequency.value = 660;
-                    osc.type = 'sine';
-                    gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-                    osc.start(now);
-                    osc.stop(now + 0.04);
                 }
             } catch (e) { /* ignore */ }
         }
@@ -2102,14 +2231,14 @@
             if (soundEnabled) playSound('click');
         });
 
-        // Attach sound to clicks — with smarter filtering
         document.addEventListener('click', (e) => {
             const target = e.target.closest(
                 '.card-header, .corner-card, .progress-step, .btn, .link-item, .contact-number, .theme-toggle, .sound-toggle, .btn-close-cert, #adminLoginBtn, #adminLogoutBtn, #adminLogoutBtn2, #downloadCertBtn, #printCertBtn'
                 );
             if (target) {
                 if (target.closest('#registerBtn')) return;
-                if (target.id === 'adminLoginBtn' || target.id === 'adminLogoutBtn' || target.id === 'adminLogoutBtn2') return;
+                if (target.id === 'adminLoginBtn' || target.id === 'adminLogoutBtn' || target.id === 'adminLogoutBtn2')
+                return;
                 if (target.id === 'downloadCertBtn' || target.id === 'printCertBtn') return;
                 playSound('click');
             }
@@ -2191,7 +2320,7 @@
         }
 
         // ============================================================
-        //  TOAST SYSTEM
+        //  TOAST
         // ============================================================
         function showToast(message, type = 'info', duration = 3500) {
             const container = document.getElementById('toastContainer');
@@ -2210,80 +2339,8 @@
         }
 
         // ============================================================
-        //  REGISTRATION + CERTIFICATE
+        //  CONFETTI
         // ============================================================
-        const form = document.getElementById('registerForm');
-        const msgBox = document.getElementById('msgBox');
-        const participantCountEl = document.getElementById('participantCount');
-
-        // كاش محلي مؤقت (للعرض السريع) — المصدر الحقيقي هو Google Sheet
-        let cachedRegistrants = [];
-        let isSyncing = false;
-
-        // يرجع آخر نسخة محفوظة في الكاش (متزامنة، تُستعمل للعرض الفوري)
-        function getRegistrants() {
-            return cachedRegistrants;
-        }
-
-        // يجيب القائمة الحقيقية من السيرفر (Google Sheet) ويحدث الكاش
-        async function fetchRegistrants() {
-            if (SHEET_API_URL.includes('PASTE_YOUR_WEB_APP_URL_HERE')) {
-                console.warn('⚠️ لم يتم ضبط SHEET_API_URL بعد — التخزين محلي مؤقتاً فقط.');
-                return cachedRegistrants;
-            }
-            try {
-                const res = await fetch(SHEET_API_URL + '?t=' + Date.now());
-                const data = await res.json();
-                cachedRegistrants = Array.isArray(data) ? data : [];
-            } catch (err) {
-                console.error('تعذر الاتصال بالسيرفر:', err);
-            }
-            return cachedRegistrants;
-        }
-
-        // يرسل عملية (إضافة/حذف/مسح) إلى Google Sheet
-        async function sendAction(action, payload) {
-            if (SHEET_API_URL.includes('PASTE_YOUR_WEB_APP_URL_HERE')) return;
-            try {
-                await fetch(SHEET_API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // لتفادي CORS preflight
-                    body: JSON.stringify({ action, ...payload })
-                });
-            } catch (err) {
-                console.error('تعذر إرسال البيانات للسيرفر:', err);
-            }
-        }
-
-        async function refreshAndRender() {
-            await fetchRegistrants();
-            updateCountersUI();
-            if (isAdminLoggedIn()) renderAdminTable(adminSearch.value);
-        }
-
-        function updateCountersUI() {
-            const count = cachedRegistrants.length;
-            participantCountEl.textContent = count;
-            participantCountEl.classList.remove('pop');
-            void participantCountEl.offsetWidth;
-            participantCountEl.classList.add('pop');
-            document.getElementById('adminCount').textContent = count;
-        }
-
-        // يبقى نفس الاسم القديم مستعمل في أماكن أخرى من الكود
-        function updateCounters() {
-            updateCountersUI();
-        }
-
-        function showMsg(text, type) {
-            msgBox.textContent = text;
-            msgBox.className = 'msg-box ' + type;
-            msgBox.style.display = 'block';
-        }
-
-        function clearMsg() { msgBox.style.display = 'none';
-            msgBox.className = 'msg-box'; }
-
         function fireConfetti() {
             const container = document.createElement('div');
             container.className = 'confetti-container';
@@ -2307,6 +2364,9 @@
             setTimeout(() => container.remove(), 2500);
         }
 
+        // ============================================================
+        //  CERTIFICATE
+        // ============================================================
         function generateCertId() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let result = 'CERT-';
@@ -2329,7 +2389,6 @@
             document.getElementById('certModal').classList.remove('show');
         };
 
-        // Download certificate as image using html2canvas
         document.getElementById('downloadCertBtn').addEventListener('click', function() {
             const certContent = document.getElementById('certContent');
             html2canvas(certContent, {
@@ -2349,12 +2408,10 @@
             });
         });
 
-        // Print certificate
         document.getElementById('printCertBtn').addEventListener('click', function() {
             window.print();
         });
 
-        // Close cert on escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeCert();
@@ -2362,10 +2419,24 @@
             }
         });
 
-        // Close cert on click outside
         document.getElementById('certModal').addEventListener('click', function(e) {
             if (e.target === this) closeCert();
         });
+
+        // ============================================================
+        //  REGISTRATION FORM
+        // ============================================================
+        const form = document.getElementById('registerForm');
+        const msgBox = document.getElementById('msgBox');
+
+        function showMsg(text, type) {
+            msgBox.textContent = text;
+            msgBox.className = 'msg-box ' + type;
+            msgBox.style.display = 'block';
+        }
+
+        function clearMsg() { msgBox.style.display = 'none';
+            msgBox.className = 'msg-box'; }
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2376,56 +2447,35 @@
             const highSchool = document.getElementById('highSchool').value.trim();
             const branch = document.getElementById('branch').value;
             const wilaya = document.getElementById('wilaya').value;
+
             if (!fullName || !phone || !highSchool || !branch || !wilaya) {
                 showMsg('⚠️ الرجاء ملء جميع الحقول المطلوبة (*)', 'error');
                 showToast('⚠️ الرجاء ملء جميع الحقول المطلوبة', 'error');
                 return;
             }
 
-            const submitBtn = form.querySelector('button[type="submit"]');
-            if (submitBtn) { submitBtn.disabled = true; submitBtn.style.opacity = '0.6'; }
-
-            // نتأكد من آخر نسخة محدثة قبل التحقق من التكرار
-            await fetchRegistrants();
-            if (cachedRegistrants.some(r => r.phone === phone)) {
+            // التحقق من عدم تكرار الهاتف
+            const existing = currentRegistrants.find(r => r.phone === phone);
+            if (existing) {
                 showMsg('⚠️ هذا رقم الهاتف مسجل مسبقاً.', 'error');
                 showToast('⚠️ رقم الهاتف مسجل مسبقاً', 'error');
-                if (submitBtn) { submitBtn.disabled = false; submitBtn.style.opacity = '1'; }
                 return;
             }
 
-            const certId = generateCertId();
-            const newEntry = {
-                id: Date.now(),
-                fullName,
-                phone,
-                email,
-                highSchool,
-                branch,
-                wilaya,
-                registeredAt: new Date().toLocaleString('ar-DZ'),
-                certificate: true,
-                certId: certId
-            };
-
-            // تحديث فوري في الواجهة (تفاؤلي) قبل تأكيد السيرفر
-            cachedRegistrants.push(newEntry);
-            updateCountersUI();
-
-            await sendAction('add', { data: newEntry });
-            await fetchRegistrants();
-            updateCountersUI();
-            if (isAdminLoggedIn()) renderAdminTable(adminSearch.value);
-
-            if (submitBtn) { submitBtn.disabled = false; submitBtn.style.opacity = '1'; }
-
-            showMsg('✅ تم تسجيلك بنجاح! 🎉', 'success');
-            showToast('🎉 تم تسجيلك بنجاح! شهادتك جاهزة.', 'success');
-            form.reset();
-            fireConfetti();
-            setTimeout(() => {
-                showCertificate(fullName, certId);
-            }, 1200);
+            try {
+                const certId = await addRegistrant({ fullName, phone, email, highSchool, branch, wilaya });
+                showMsg('✅ تم تسجيلك بنجاح! 🎉', 'success');
+                showToast('🎉 تم تسجيلك بنجاح! شهادتك جاهزة.', 'success');
+                form.reset();
+                fireConfetti();
+                setTimeout(() => {
+                    showCertificate(fullName, certId);
+                }, 1200);
+            } catch (error) {
+                showMsg('⚠️ حدث خطأ أثناء التسجيل، حاول مرة أخرى.', 'error');
+                showToast('⚠️ خطأ في الاتصال بقاعدة البيانات', 'error');
+                console.error(error);
+            }
         });
 
         // ============================================================
@@ -2440,11 +2490,10 @@
         const adminLogoutBtn2 = document.getElementById('adminLogoutBtn2');
         const loginError = document.getElementById('loginError');
         const adminPanelEl = document.getElementById('adminPanel');
-        const adminLoginBox = document.getElementById('adminLoginBox');
 
         function isAdminLoggedIn() { return adminLoggedIn; }
 
-        async function adminLogin() {
+        function adminLogin() {
             const pwd = adminPasswordInput.value.trim();
             if (pwd === ADMIN_CODE) {
                 adminLoggedIn = true;
@@ -2454,8 +2503,7 @@
                 adminLogoutBtn.style.display = 'inline-flex';
                 adminPasswordInput.style.display = 'none';
                 adminPasswordInput.value = '';
-                await fetchRegistrants();
-                renderAdminTable();
+                renderAdminTable(currentRegistrants);
                 showToast('🔐 مرحباً بك في لوحة الإدارة', 'success');
                 playSound('success');
             } else {
@@ -2483,15 +2531,13 @@
         adminLogoutBtn2.addEventListener('click', adminLogout);
 
         // ============================================================
-        //  ADMIN TABLE RENDER
+        //  ADMIN TABLE
         // ============================================================
         const adminSearch = document.getElementById('adminSearch');
         const adminTableBody = document.getElementById('adminTableBody');
-        const exportCsvBtn = document.getElementById('exportCsvBtn');
-        const clearAllBtn = document.getElementById('clearAllBtn');
 
-        function renderAdminTable(filter = '') {
-            const list = getRegistrants();
+        function renderAdminTable(list) {
+            const filter = adminSearch.value.trim();
             const filtered = list.filter(r => r.fullName.includes(filter) || r.phone.includes(filter));
             if (filtered.length === 0) {
                 adminTableBody.innerHTML =
@@ -2509,38 +2555,26 @@
               <td>${r.branch}</td>
               <td>${r.wilaya || '—'}</td>
               <td style="text-align:center;">
-                <button onclick="deleteRegistrant(${r.id})" style="background:var(--red);color:#fff;border:none;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;">✕</button>
+                <button onclick="deleteRegistrant('${r.id}')" style="background:var(--red);color:#fff;border:none;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;">✕</button>
               </td>
             </tr>`;
             });
             adminTableBody.innerHTML = html;
-            document.getElementById('adminCount').textContent = list.length;
         }
 
-        window.deleteRegistrant = async function(id) {
-            if (!confirm('هل أنت متأكد من حذف هذا المسجل؟')) return;
-            cachedRegistrants = cachedRegistrants.filter(r => r.id !== id);
-            updateCountersUI();
-            if (isAdminLoggedIn()) renderAdminTable(adminSearch.value);
-            await sendAction('delete', { id });
-            await fetchRegistrants();
-            updateCountersUI();
-            if (isAdminLoggedIn()) renderAdminTable(adminSearch.value);
-            showToast('🗑️ تم حذف المسجل', 'info');
-            playSound('click');
-        };
-
         adminSearch.addEventListener('input', function() {
-            if (isAdminLoggedIn()) renderAdminTable(this.value);
+            if (isAdminLoggedIn()) renderAdminTable(currentRegistrants);
         });
 
-        exportCsvBtn.addEventListener('click', function() {
-            const list = getRegistrants();
-            if (list.length === 0) { showToast('⚠️ لا يوجد مسجلون لتصديرهم', 'error'); return; }
+        // ============================================================
+        //  ADMIN: EXPORT & CLEAR
+        // ============================================================
+        document.getElementById('exportCsvBtn').addEventListener('click', function() {
+            if (currentRegistrants.length === 0) { showToast('⚠️ لا يوجد مسجلون لتصديرهم', 'error'); return; }
             const headers = ['الاسم', 'الهاتف', 'البريد', 'الثانوية', 'الشعبة', 'الولاية', 'تاريخ التسجيل', 'رقم الشهادة'];
-            const rows = list.map(r => [r.fullName, r.phone, r.email || '', r.highSchool, r.branch, r.wilaya || '', r
-                .registeredAt || '', r.certId || ''
-            ]);
+            const rows = currentRegistrants.map(r => [r.fullName, r.phone, r.email || '', r.highSchool, r.branch, r.wilaya ||
+                    '', r.registeredAt || '', r.certId || ''
+                ]);
             let csv = '\uFEFF' + headers.join(',') + '\n';
             rows.forEach(row => { csv += row.map(c => `"${c}"`).join(',') + '\n'; });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -2553,19 +2587,7 @@
             playSound('click');
         });
 
-        clearAllBtn.addEventListener('click', async function() {
-            if (!confirm('⚠️ هل أنت متأكد من مسح جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
-            if (!confirm('تأكيد نهائي: مسح الكل؟')) return;
-            cachedRegistrants = [];
-            updateCountersUI();
-            if (isAdminLoggedIn()) renderAdminTable('');
-            await sendAction('clear', {});
-            await fetchRegistrants();
-            updateCountersUI();
-            if (isAdminLoggedIn()) renderAdminTable('');
-            showToast('🗑️ تم مسح جميع المسجلين', 'info');
-            playSound('click');
-        });
+        document.getElementById('clearAllBtn').addEventListener('click', clearAllRegistrants);
 
         // ============================================================
         //  COUNTDOWN TIMER
@@ -2601,16 +2623,8 @@
             cdMinutes.textContent = String(minutes).padStart(2, '0');
             cdSeconds.textContent = String(seconds).padStart(2, '0');
             cdLabel.textContent = days === 1 ? 'يوم' : days > 1 ? 'أيام' : '';
-
-            // Flash effect on seconds change
-            if (seconds % 5 === 0) {
-                cdSeconds.style.transition = 'transform 0.1s';
-                cdSeconds.style.transform = 'scale(1.15)';
-                setTimeout(() => { cdSeconds.style.transform = 'scale(1)'; }, 150);
-            }
         }
 
-        // Check if today is one of the event days and highlight the pill
         function highlightToday() {
             const now = new Date();
             const todayStr = now.toDateString();
@@ -2636,26 +2650,25 @@
         }, 1000);
 
         // ============================================================
-        //  INIT
+        //  INIT - فتح أول بطاقة بعد التحميل
         // ============================================================
-        refreshAndRender();
-        setInterval(refreshAndRender, POLL_INTERVAL_MS);
-
-        // Open first card after splash
         setTimeout(() => {
             const firstCard = document.querySelector('.card');
             if (firstCard && !firstCard.classList.contains('open')) firstCard.classList.add('open');
-        }, 2200);
+        }, 2600); // بعد اختفاء شاشة التحميل بقليل
 
-        // Re-apply dark mode from localStorage after DOM load
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark');
             themeToggle.textContent = '☀️';
         }
 
-        console.log('🎓 يوم التوجيه الجامعي — النسخة التفاعلية المطورة');
+        console.log('🎓 يوم التوجيه الجامعي — النسخة الآمنة (Firebase + LocalStorage Fallback)');
         console.log('📅 الأيام: الثلاثاء 14, الأربعاء 15, الخميس 16 جويلية 2026');
         console.log('🔑 كود الإدارة: admin123');
+        console.log('💾 وضع العمل:', dbMode === 'firebase' ? 'سحابي (Firebase)' : 'محلي (LocalStorage)');
+        if (dbMode === 'local') {
+            console.warn('⚠️ تأكد من ضبط بيانات Firebase بشكل صحيح للعمل السحابي المشترك.');
+        }
     </script>
 </body>
 </html>
